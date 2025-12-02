@@ -4,7 +4,7 @@ import express from "express"
 import cors from "cors"
 const app = express()
 
-const port = process.env.PORT || 3000
+const port: number | string = process.env.PORT || 3000
 
 import path from "path"
 import userRoutes from "./routes/userRoutes.ts"
@@ -20,5 +20,5 @@ app.use("/api", userRoutes)
 app.use(express.static(path.join(path.resolve(), "dist")))
 
 app.listen(3000, () => {
-  console.log(`Redo på http://localhost:/3000`)
+  console.log(`Redo på http://localhost:/${port}`)
 })
