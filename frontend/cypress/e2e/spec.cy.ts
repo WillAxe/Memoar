@@ -6,15 +6,16 @@ describe("the page and make sure that it loads and test the basic functionlaity 
     cy.get("h1").should("exist")
   })
 
-  it("has a navbar for user to navigate with")
-  cy.get("[data-cy='navigation-bar]'").should("exist")
-  cy.get("[data-cy='navigation-bar']").within(() => {
-    cy.get("[data-cy='signin-link']").click()
-    cy.url().should("include", "/signup")
-    cy.get("[data-cy='home-navigation-link']").click()
-    cy.url().should("include", "/#/")
-    cy.get("[data-cy='login-link']").click()
-    cy.url().should("include", "/login")
+  it("has a navbar for user to navigate with", () => {
+    cy.get("[data-cy='navigation-bar]'").should("exist")
+    cy.get("[data-cy='navigation-bar']").within(() => {
+      cy.get("[data-cy='signin-link']").click()
+      cy.url().should("include", "/signup")
+      cy.get("[data-cy='home-navigation-link']").click()
+      cy.url().should("include", "/#/")
+      cy.get("[data-cy='login-link']").click()
+      cy.url().should("include", "/login")
+    })
   })
 
   it("presses on the login link and login the user", () => {
