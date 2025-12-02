@@ -1,0 +1,1 @@
+CREATE TABLE Posts (post_id serial PRIMARY KEY, user_id INTEGER REFERENCES Users(user_id) NOT NULL  ON DELETE CASCADE, image_url VARCHAR(255), caption VARCHAR(255), created_at TIMESTAMP DEFAULT NOW()); 
