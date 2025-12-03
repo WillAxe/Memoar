@@ -1,7 +1,8 @@
 import Home from "./components/home"
-import Signin from "./components/sign-in"
+import Signup from "./components/sign-up"
 import Login from "./components/login"
 import LandingPage from "./components/landing-page"
+import Navbar from "./components/navbar"
 import { createHashRouter, Outlet, RouterProvider } from "react-router-dom"
 
 function App() {
@@ -9,18 +10,18 @@ function App() {
     {
       children: [
         { element: <Home />, path: "/" },
-        { element: <Signin />, path: "/signin" },
+        { element: <Signup />, path: "/signup" },
         { element: <Login />, path: "/login" },
         { element: <LandingPage />, path: "/landingpage/:userid" },
       ],
       element: (
         <>
-          <Outlet />
+          <Outlet></Outlet>
+          <Navbar data-cy="navigation-bar" />
         </>
       ),
     },
   ])
-
   return <RouterProvider router={router}></RouterProvider>
 }
 

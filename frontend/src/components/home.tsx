@@ -1,7 +1,8 @@
 function Home() {
   return (
     <>
-      <h1>Hello World!</h1>
+      <h1>Memoar</h1>
+      <p>Your personal memory gallery for every moment</p>
     </>
   )
 }

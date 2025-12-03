@@ -6,8 +6,8 @@ interface User {
   user_name: string
   user_mail: string
   user_password: string
-  user_birthday: Date
-  user_age: number
+  user_birthday: string | null
+  user_age: number | null
 }
 
 export function getUsers(): Promise<User[]> {
@@ -60,8 +60,8 @@ export function createUser(
   user_name: string,
   user_mail: string,
   user_password: string,
-  user_birthday: Date,
-  user_age: number
+  user_birthday: string | null,
+  user_age: number | null
 ) {
   return new Promise<User>((resolve, reject) => {
     const query =

@@ -20,7 +20,7 @@ describe("the page and make sure that it loads and test the basic functionlaity 
 
   it("presses on the login link and login the user", () => {
     cy.get("[data-cy='login-link']").click()
-    cy.get("[data-cy='name-input-lgn']").type("Will")
+    // cy.get("[data-cy='name-input-lgn']").type("Will")
     cy.get("[data-cy='mail-input-lgn']").type("will@example.com")
     cy.get("[data-cy='mail-input-lgn']").should("have.class", "correct-input")
     cy.get("[data-cy='psw-input-lgn']").type("Will")
