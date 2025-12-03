@@ -9,7 +9,7 @@ describe("the page and make sure that it loads and test the basic functionlaity 
   it("has a navbar for user to navigate with", () => {
     cy.get("[data-cy='navigation-bar']").should("exist")
     cy.get("[data-cy='navigation-bar']").within(() => {
-      cy.get("[data-cy='signin-link']").click()
+      cy.get("[data-cy='signup-link']").click()
       cy.url().should("include", "/signup")
       cy.get("[data-cy='home-navigation-link']").click()
       cy.url().should("include", "/#/")
