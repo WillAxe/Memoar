@@ -3,6 +3,7 @@ import {
   getUserById as getUserByIdController,
   getUsers as getUsersController,
   createUser as createUserController,
+  loginUser as loginUserController,
 } from "../controllers/userControllers.ts"
 const router = express.Router()
 
@@ -10,6 +11,6 @@ const router = express.Router()
 router.get("/users", getUsersController)
 router.get("/user/:id", getUserByIdController)
 router.post("/users", createUserController)
-router.post("/login")
+router.post("/login", loginUserController)
 
 export default router
