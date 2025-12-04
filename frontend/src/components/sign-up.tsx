@@ -30,16 +30,19 @@ function SignUp() {
         user_age: formData.age,
       }
 
-      const res: Response = await fetch("api/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application.json",
-        },
-        body: JSON.stringify(payload),
-      })
-      if (res.ok) {
-        const data: ApiUserResponse = await res.json()
-        console.log(data.user_id)
+      const response: Response = await fetch(
+        "http://localhost:3000/api/users",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      )
+      if (response.ok) {
+        const data: ApiUserResponse = await response.json()
+        console.log(data)
         const userId: number = data.user_id
         localStorage.setItem("userID", userId.toString())
         setFormData({ name: "", email: "", password: "", birthday: "", age: 0 })
@@ -47,7 +50,7 @@ function SignUp() {
       } else {
         let msg: string = "Something went wrong when creating the account"
         try {
-          const body = await res.json()
+          const body = await response.json()
           if (body && body.error) msg = body.error
         } catch {
           const msg: string = "Error"
@@ -75,7 +78,7 @@ function SignUp() {
   return (
     <>
       <div>
-        <h1>Login</h1>
+        <h1>Create Account</h1>
         <p>
           <Link to="/">Back</Link>
         </p>

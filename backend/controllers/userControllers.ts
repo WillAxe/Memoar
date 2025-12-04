@@ -75,13 +75,8 @@ export const createUser = async (
       user_birthday,
       user_age
     )
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "Successfully created a user account!",
-        user: user.user_name,
-      })
+    // Return the created user object (including user_id) at top-level
+    res.status(201).json(user)
   } catch (error) {
     res.status(500).json({ message: "Error creating an user", error })
   }
@@ -94,11 +89,12 @@ export const loginUser = async (
   try {
     const { user_mail, user_password } = req.body
     const user = await loginUserService(user_mail, user_password)
-    res.status(200).json({
-      sucess: true,
-      user: user.user_name,
-      message: "Successfully logged in",
-    })
+    if (!user) {
+      res.status(401).json({ message: "Invalid credentials" })
+      return
+    }
+
+    res.status(200).json(user)
   } catch (error) {
     res.status(500).json({ message: "error logging in", error })
   }

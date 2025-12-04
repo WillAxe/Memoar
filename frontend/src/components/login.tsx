@@ -2,29 +2,38 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import type { ApiUserResponse } from "./static/interfaces"
 import { Link } from "react-router-dom"
+import "../css/login.css"
 
 function Login() {
   const navigate = useNavigate()
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
+  const [correctInput, setCorrectInput] = useState<boolean>(false)
+
+  function toogleClass() {
+    setCorrectInput(!correctInput)
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      const res: Response = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ user_mail: email, user_password: password }),
-      })
+      const response: Response = await fetch(
+        "http://localhost:3000/api/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user_mail: email, user_password: password }),
+        }
+      )
 
-      if (!res.ok) {
+      if (!response.ok) {
         throw new Error("Wrong credentials")
       }
-      const data: ApiUserResponse = await res.json()
+      const data: ApiUserResponse = await response.json()
       const userId: number = data.user_id
-      localStorage.setItem("UserID", userId.toString())
+      localStorage.setItem("userID", userId.toString())
       navigate(`/landingpage/${userId}`)
     } catch (error) {
       alert("Login failed, check your credentials")
@@ -37,11 +46,14 @@ function Login() {
       <div>
         <h1>Login</h1>
         <Link to="/">go back</Link>
-        <form onSubmit={handleSubmit}>
+        <form className="loginForm" onSubmit={handleSubmit}>
           <label>
             email *:
             <input
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value)
+                toogleClass()
+              }}
               data-cy="mail-input-lgn"
               type="email"
               name="email"
@@ -57,16 +69,6 @@ function Login() {
               name="password"
               required
             />
-          </label>
-
-          <label>
-            your birthday(optional):
-            <input type="date" name="birthday" />
-          </label>
-
-          <label>
-            age(optional):
-            <input type="number" name="age" />
           </label>
           <div>
             <input data-cy="login-btn" type="submit" value="Login"></input>

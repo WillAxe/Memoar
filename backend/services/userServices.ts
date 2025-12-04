@@ -65,7 +65,7 @@ export function createUser(
 ) {
   return new Promise<User>((resolve, reject) => {
     const query =
-      "INSERT INTO Users(user_name, user_mail, user_password, user_birthday, user_age) VALUES($1, $2, $3,$4, $5) RETURNING *"
+      "INSERT INTO Users(user_name, user_mail, user_password, user_birthday, user_age) VALUES($1, $2, $3, $4, $5) RETURNING *"
     database.query(
       query,
       [user_name, user_mail, user_password, user_birthday, user_age],
