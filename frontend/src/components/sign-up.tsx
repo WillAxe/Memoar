@@ -30,16 +30,13 @@ function SignUp() {
         user_age: formData.age,
       }
 
-      const response: Response = await fetch(
-        "http://localhost:3000/api/users",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      )
+      const response: Response = await fetch("/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
       if (response.ok) {
         const data: ApiUserResponse = await response.json()
         console.log(data)

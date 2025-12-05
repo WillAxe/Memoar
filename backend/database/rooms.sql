@@ -1,0 +1,1 @@
+CREATE TABLE rooms(room_id serial PRIMARY KEY, room_name VARCHAR(255) NOT NULL, created_at TIMESTAMP DEFAULT NOW(), room_posts INTEGER REFERENCES posts(post_id));

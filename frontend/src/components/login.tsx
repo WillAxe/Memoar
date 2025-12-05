@@ -17,16 +17,13 @@ function Login() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      const response: Response = await fetch(
-        "http://localhost:3000/api/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ user_mail: email, user_password: password }),
-        }
-      )
+      const response: Response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_mail: email, user_password: password }),
+      })
 
       if (!response.ok) {
         throw new Error("Wrong credentials")
