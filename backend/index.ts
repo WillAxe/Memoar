@@ -8,14 +8,14 @@ const port: number | string = process.env.PORT || 3000
 
 import path from "path"
 import userRoutes from "./routes/userRoutes.ts"
-// import postRoutes from "./routes/postRoutes.ts"
+import roomRoutes from "./routes/roomRoutes.ts"
 
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use("/api", userRoutes)
-// app.use("/api", postRoutes)
+app.use("/api", roomRoutes)
 
 app.use(express.static(path.join(path.resolve(), "dist")))
 

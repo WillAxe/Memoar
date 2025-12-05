@@ -15,11 +15,11 @@ function LandingPage() {
   }, [])
   return (
     <>
-      <h1>{user ? `Weclome ${user.user_name}!` : "None"}</h1>
+      <h1>{user ? `Welcome ${user.user_name}!` : "None"}</h1>
       <main>
         <nav className="innerNavbar">
           <div>
-            <Link to={`/rooms/${userId}`} className="navLink">
+            <Link to={`/landingpage/rooms/${userId}`} className="navLink">
               Your rooms
             </Link>
 
