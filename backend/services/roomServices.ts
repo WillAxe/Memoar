@@ -44,7 +44,6 @@ export function createRoom(room_name: string, user_id: number): Promise<Room> {
             [user_id, createdRoom.room_id],
             (err2: Error, _res2: QueryResult) => {
               if (err2) {
-                // If inserting into user_rooms fails, reject so caller can handle
                 reject(err2)
               } else {
                 resolve(createdRoom)

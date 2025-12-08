@@ -7,7 +7,7 @@ import {
 
 const router = express.Router()
 
-router.get("/room/:roomid", getRoomByIdController)
+router.get("/room/:id", getRoomByIdController)
 router.get("/users/:id/rooms", getRoomsForUserController)
 router.post("/rooms", createRoomController)
 

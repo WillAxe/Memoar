@@ -20,8 +20,8 @@ function App() {
       ],
       element: (
         <>
-          <Outlet></Outlet>
           <Navbar data-cy="navigation-bar" />
+          <Outlet></Outlet>
         </>
       ),
     },
