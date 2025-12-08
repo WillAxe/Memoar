@@ -7,6 +7,8 @@ const app = express()
 const port: number | string = process.env.PORT || 3000
 
 import path from "path"
+app.use("/uploads", express.static("uploads"))
+
 import userRoutes from "./routes/userRoutes.ts"
 import roomRoutes from "./routes/roomRoutes.ts"
 
