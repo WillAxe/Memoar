@@ -31,6 +31,7 @@ function Login() {
       const data: ApiUserResponse = await response.json()
       const userId: number = data.user_id
       localStorage.setItem("userID", userId.toString())
+      sessionStorage.setItem("isLoggedIn", true.toString())
       navigate(`/landingpage/${userId}`)
     } catch (error) {
       alert("Login failed, check your credentials")

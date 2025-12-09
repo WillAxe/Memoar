@@ -42,6 +42,7 @@ function SignUp() {
         console.log(data)
         const userId: number = data.user_id
         localStorage.setItem("userID", userId.toString())
+        sessionStorage.setItem("isLoggedIn", true.toString())
         setFormData({ name: "", email: "", password: "", birthday: "", age: 0 })
         navigate(`/landingpage/${userId}`)
       } else {

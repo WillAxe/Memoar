@@ -22,8 +22,9 @@ function Room() {
           </div>
         </div>
         <div>
-          <form>
-            <input type="file"></input>
+          <form action="/posts" method="post" encType="multipart/form-data">
+            <input type="file" name="image" />
+            <button type="submit">Send</button>
           </form>
         </div>
       </section>
