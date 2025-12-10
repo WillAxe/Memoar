@@ -30,8 +30,3 @@ export type ApiRoomResponse = {
   created_at: Date | string
   room_posts: number
 }
-
-export type LinkToProps = {
-  body: ApiRoomResponse
-  bodies: string
-}

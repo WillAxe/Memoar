@@ -10,15 +10,17 @@ interface PostResponse {
 }
 
 export const createPost = async (
+  // req: Request,
   req: Request<
     {},
     any,
-    { user_id: number; caption: string; image_url: string }
+    { user_id: string; caption: string; image_url: string }
   >,
   res: Response
 ): Promise<void> => {
   try {
-    const { user_id, caption } = req.body
+    const user_id = Number(req.body.user_id)
+    const caption = req.body.caption
     if (!caption || !user_id) {
       res.status(400).json({ message: "caption and user_id is required" })
       return
@@ -26,9 +28,12 @@ export const createPost = async (
 
     if (!req.file) {
       res.status(400).json({ error: "No picture uploaded" })
+      return
     }
-    const image_url = `/uploads/images/${req.file!.filename}`
-    const post = await createPostService(Number(user_id), caption, image_url)
+    const image_url = `/uploads/images/${req.file.filename}`
+    const post = await createPostService(user_id, caption, image_url)
+    console.log(req.body)
+    console.log(req.file)
     res.status(201).json({ post })
   } catch (error) {
     res.status(501).json({ message: "Error posting", error })
