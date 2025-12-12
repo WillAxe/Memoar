@@ -1,7 +1,6 @@
-// import React from "react"
 import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
-// import { useLocation } from "react-router-dom"
+import "../css/navbar.css"
 function Navbar() {
   const { userid } = useParams()
   const isLoggedIn = Boolean(userid)
@@ -10,7 +9,7 @@ function Navbar() {
     <>
       <nav data-cy="navigation-bar">
         {isLoggedIn && (
-          <div className="innerNavbar">
+          <div className="inner-navbar">
             <Link data-cy="home-navigation-link" to={`/landingpage/${userid}`}>
               Home
             </Link>

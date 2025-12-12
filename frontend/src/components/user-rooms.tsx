@@ -19,7 +19,7 @@ function UserRooms() {
       <h1>Hello</h1>
       <section>
         {rooms.map((room) => (
-          <div className="roomCard" key={room.room_id}>
+          <div className="room-card" key={room.room_id}>
             <h2>{`${room.room_name}`}</h2>
             <LinkTo body={room} bodies="room"></LinkTo>
           </div>

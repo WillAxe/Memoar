@@ -11,6 +11,7 @@ import path from "path"
 import userRoutes from "./routes/userRoutes.ts"
 import roomRoutes from "./routes/roomRoutes.ts"
 import postRoutes from "./routes/postRoutes.ts"
+import feedRoutes from "./routes/feedRoutes.ts"
 
 app.use(cors())
 app.use(express.json())
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use("/api", userRoutes)
 app.use("/api", roomRoutes)
 app.use("/api", postRoutes)
+app.use("/api", feedRoutes)
 
 app.use(express.static(path.join(path.resolve(), "dist")))
 app.use("/uploads", express.static("uploads"))

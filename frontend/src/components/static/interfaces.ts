@@ -30,3 +30,14 @@ export type ApiRoomResponse = {
   created_at: Date | string
   room_posts: number
 }
+
+export type FeedItem = {
+  type: "room-created" | "post"
+  roomName: string
+  createdAt: string
+  content?: string
+}
+
+export interface RoomFormData {
+  room_name: string
+}
