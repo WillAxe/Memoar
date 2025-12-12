@@ -23,7 +23,7 @@ function Navbar() {
               Join room
             </Link>
 
-            <Link to={`/newroom`} className="navLink">
+            <Link to={`/landingpage/${userid}/newroom`} className="navLink">
               Create new room
             </Link>
 

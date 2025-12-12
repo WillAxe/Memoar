@@ -6,12 +6,14 @@ export type LinkToProps = {
   bodies: string
 }
 
+const userId: string = localStorage.getItem("userID")!
+
 function LinkTo({ body, bodies }: LinkToProps) {
   const roomId = body.room_id
   localStorage.setItem("roomID", roomId.toString())
   return (
     <>
-      <Link to={`/landingpage/${bodies}/${roomId}`}>Click here</Link>
+      <Link to={`/landingpage/${userId}/${bodies}/${roomId}`}>Click here</Link>
     </>
   )
 }

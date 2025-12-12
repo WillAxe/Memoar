@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+  <title>UML</title>
+</head>
+
+<body>
+  <pre class="mermaid">
+  sequenceDiagram
+
+  actor U as User
+  participant F as Frontend
+  participant E as Express
+  participant P as PostgreSQL
+
+  U->>F: Create a new room and add data (room_name etc.)
+  F->>E: Send a fetch(post) request
+  E->>P: Insert into posts table with input data
+  P-->>E: Return the created room with rows
+  E-->>F: Replies with the creted room in JSON
+  F-->>U: Displays the new room with a success message
+</pre>
+</body>
+
+</html>
