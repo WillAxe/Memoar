@@ -1,6 +1,15 @@
 FROM node
 COPY . /app
 WORKDIR /app
+COPY package*.json ./
+RUN npm install
+
+# 2. copy rest of the code 
+COPY . .
+
+# 3. Building frontend and backend
+RUN npm run build
+
 RUN npm install
 EXPOSE 3000
 ENTRYPOINT ["node", "dist/index.js"]
