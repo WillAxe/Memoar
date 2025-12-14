@@ -1,6 +1,8 @@
 services:
   backend:
-    build: backend
+    build:
+      context: .
+      dockerfile: backend/dockerfile
     depends_on:
       database:
         condition: service_healthy
