@@ -1,13 +1,12 @@
 FROM node
-COPY . /app
 WORKDIR /app
-COPY package*.json ./
+COPY backend/package*.json ./
 RUN npm install
 
-# 2. copy rest of the code 
-COPY . .
+COPY backend/ .
 
-# 3. Building frontend and backend
+COPY  frontend/ ../frontend/
+
 RUN npm run build
 
 RUN npm install
