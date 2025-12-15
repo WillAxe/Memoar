@@ -3,8 +3,8 @@
   "compilerOptions": {
     "noEmit": true,
     // File Layout
-    "rootDir": ".",
-    "outDir": "./dist",
+    // "rootDir": ".",
+    // "outDir": "./dist",
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
