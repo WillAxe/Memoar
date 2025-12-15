@@ -9,15 +9,3 @@ COPY frontend/ ../frontend/
 RUN npm run build
 EXPOSE 3000
 ENTRYPOINT ["node", "dist/index.js"]
-# FROM node
-# WORKDIR /app
-# COPY backend/package*.json ./
-# RUN npm install
-# COPY frontend/package*.json ../frontend/
-# RUN npm install --prefix ../frontend
-# COPY backend/ .
-# COPY  frontend/ ../frontend/
-# RUN npm run build
-# RUN npm install
-# EXPOSE 3000
-# CMD ["node", "index.js"]

@@ -14,21 +14,19 @@ function LandingPage() {
       .then((result: { user: ApiUserResponse }) => {
         setUser(result.user)
       })
-  }, [])
-
-  useEffect(() => {
     fetch(`/api/user/${userId}/feed`)
       .then((response) => response.json())
       .then((result: { feed: FeedItem[] }) => {
         setFeed(result.feed)
       })
   }, [])
+
   return (
     <>
       <h1>{user ? `Welcome ${user.user_name}!` : "None"}</h1>
       <main>
         <section className="start-feed">
-          {feed.length === 0 && <p>No reqent activity!</p>}
+          {!feed || (feed.length === 0 && <p>No reqent activity!</p>)}
           {feed.map((item, index) => (
             <article key={index} className="feed-card">
               {item.type === "room-created" && (

@@ -21,11 +21,6 @@ app.use("/api", userRoutes)
 app.use("/api", roomRoutes)
 app.use("/api", postRoutes)
 app.use("/api", feedRoutes)
-// app.use(express.static("public"))
-
-// app.get("*", (_req, res) => {
-//   res.sendFile(path.resolve("public/index.html"))
-// })
 
 app.use("/uploads", express.static("uploads"))
 
