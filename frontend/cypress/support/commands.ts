@@ -1,4 +1,25 @@
 /// <reference types="cypress" />
+
+//intercept the fetch request when logging in and mock the api response from the backend
+Cypress.Commands.add("login", () => {
+  cy.intercept("POST", "/api/login", {
+    statusCode: 200,
+    body: { user_id: 1 },
+  }).as("login")
+  cy.visit("/login")
+  cy.get('[data-cy="mail-input-lgn"]').type("test@example.com")
+  cy.get('[data-cy="psw-input-lgn"]').type("password")
+  cy.get('[data-cy="login-btn"]').click()
+  cy.wait("@login")
+  cy.url().should("include", "/landingpage/")
+})
+
+/* eslint-disable @typescript-eslint/no-namespace */
+declare namespace Cypress {
+  interface Chainable {
+    login(): Chainable<Element>
+  }
+}
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite

@@ -22,9 +22,9 @@ describe("the page and make sure that it loads and test the basic functionlaity 
     cy.get("[data-cy='login-link']").click()
     // cy.get("[data-cy='name-input-lgn']").type("Will")
     cy.get("[data-cy='mail-input-lgn']").type("will@example.com")
-    cy.get("[data-cy='mail-input-lgn']").should("have.class", "correctInput")
+    cy.get("[data-cy='mail-input-lgn']").should("have.class", "correct-input")
     cy.get("[data-cy='psw-input-lgn']").type("Will")
-    cy.get("[data-cy='psw-input-lgn']").should("have.class", "correctInput")
+    cy.get("[data-cy='psw-input-lgn']").should("have.class", "correct-input")
     cy.get("[data-cy='login-btn']").click()
 
     cy.get("[data-cy='login-notification-msg']").contains(
@@ -35,9 +35,9 @@ describe("the page and make sure that it loads and test the basic functionlaity 
   it("enter wrong mail or password", () => {
     cy.visit("/login")
     cy.get("[data-cy='mail-input-lgn']").type("will3example.")
-    cy.get("[data-cy='mail-input-lgn']").should("have.class", "wrongInput")
+    cy.get("[data-cy='mail-input-lgn']").should("have.class", "wrong-input")
     cy.get("[data-cy='psw-input-lgn']").type("w43ll")
-    cy.get("[data-cy='psw-input-lgn']").should("have.class", "wrongInput")
+    cy.get("[data-cy='psw-input-lgn']").should("have.class", "wrong-input")
   })
 
   it("signup and creates a account", () => {
@@ -49,7 +49,7 @@ describe("the page and make sure that it loads and test the basic functionlaity 
       "correct-input"
     )
     cy.get("[data-cy='psw-input-signup']").type("password")
-    cy.get("[data-cy='psw-input-signup']").should("have.class", "correctInput")
+    cy.get("[data-cy='psw-input-signup']").should("have.class", "correct-input")
 
     cy.get("[data-cy='signup-btn']").click()
 
@@ -61,8 +61,8 @@ describe("the page and make sure that it loads and test the basic functionlaity 
   it("wrong format on mail and password", () => {
     cy.visit("/signup")
     cy.get("[data-cy='mail-input-signup']").type("will3example.")
-    cy.get("[data-cy='mail-input-signup']").should("have.class", "wrongInput")
+    cy.get("[data-cy='mail-input-signup']").should("have.class", "wrong-input")
     cy.get("[data-cy='psw-input-singup']").type("w43ll")
-    cy.get("[data-cy='psw-input-signup']").should("have.class", "wrongInput")
+    cy.get("[data-cy='psw-input-signup']").should("have.class", "wrong-input")
   })
 })
