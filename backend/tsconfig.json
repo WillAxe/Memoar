@@ -1,7 +1,9 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    "noEmit": true,
+    "noEmit": false,
+    "outDir": "./dist",
+    "rootDir": ".",
     // File Layout
     // "rootDir": ".",
     // "outDir": "./dist",
