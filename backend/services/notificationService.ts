@@ -176,7 +176,7 @@ export async function createRoomInvite(
   await database.query(
     `
     INSERT INTO notifications (user_id, room_id, invite_text)
-    VALUES ($1, $2, $3, NOW())
+    VALUES ($1, $2, $3)
   `,
     [invitedUserId, roomId, text]
   )

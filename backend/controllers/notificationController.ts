@@ -3,6 +3,7 @@ import {
   getNotificationsByUser,
   markNotificationAsRead,
   acceptRoomInvite,
+  createRoomInvite,
 } from "../services/notificationService.ts"
 
 export async function getNotifications(req: Request, res: Response) {
@@ -48,5 +49,31 @@ export async function acceptInvite(req: Request, res: Response) {
     }
 
     res.status(500).json({ message: "Failed to accept invite" })
+  }
+}
+
+export async function roomInvite(req: Request, res: Response): Promise<void> {
+  try {
+    const inviterUserId = req.session.userId
+
+    if (!inviterUserId) {
+      res.status(401).json({ message: "Not authenticated" })
+      return
+    }
+    const { invitedUserId, roomId } = req.body
+
+    if (!invitedUserId || !roomId) {
+      res.status(400).json({ message: "Missing invitedUserId or roomId" })
+      return
+    }
+    await createRoomInvite(
+      Number(invitedUserId),
+      Number(roomId),
+      "You have been invited to a room"
+    )
+
+    res.status(201).json({ message: "Invitation sent" })
+  } catch (error) {
+    res.status(500).json({ message: "Failed to send invitation", error })
   }
 }
