@@ -1,4 +1,4 @@
-import { createPost as createPostService } from "../services/postServices.ts"
+import { createPost as createPostService } from "../services/postService.ts"
 import type { Response, Request } from "express"
 
 interface PostResponse {

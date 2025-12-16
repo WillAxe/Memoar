@@ -4,7 +4,7 @@ import {
   getUsers as getUsersController,
   createUser as createUserController,
   loginUser as loginUserController,
-} from "../controllers/userControllers.ts"
+} from "../controllers/userController.ts"
 const router = express.Router()
 
 // Get all users

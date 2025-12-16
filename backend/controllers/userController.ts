@@ -1,9 +1,10 @@
+// import type { authenticate } from "../middleware/auth.ts"
 import {
   getUsers as getUsersService,
   getUserById as getUserByIdService,
   loginUser as loginUserService,
   createUser as createUserService,
-} from "../services/userServices.ts"
+} from "../services/userService.ts"
 import type { Response, Request } from "express"
 
 interface UserResponse {
@@ -75,7 +76,7 @@ export const createUser = async (
       user_birthday,
       user_age
     )
-    // Return the created user object (including user_id) at top-level
+
     res.status(201).json(user)
   } catch (error) {
     res.status(500).json({ message: "Error creating an user", error })
@@ -94,6 +95,7 @@ export const loginUser = async (
       return
     }
 
+    req.session.userId = user.user_id
     res.status(200).json(user)
   } catch (error) {
     res.status(500).json({ message: "error logging in", error })

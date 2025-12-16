@@ -2,7 +2,7 @@ import {
   getRoomById as getRoomByIdService,
   createRoom as createRoomService,
   getRoomsForUser as getRoomsForUserService,
-} from "../services/roomServices.ts"
+} from "../services/roomService.ts"
 import type { Response, Request } from "express"
 
 interface RoomResponse {
