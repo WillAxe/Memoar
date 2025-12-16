@@ -6,6 +6,10 @@ function Room() {
   const [room, setRoom] = useState<ApiRoomResponse>()
   const [file, setFile] = useState<File | null>(null)
   const [caption, setCaption] = useState<string>("")
+  const [invitedUser, setInvitedUser] = useState<string>("")
+  const [inviteText, setInviteText] = useState<string>(
+    "You have been invited to join this room"
+  )
 
   const userId = localStorage.getItem("userID")!
 
@@ -23,6 +27,7 @@ function Room() {
       const response = await fetch(`/api/posts`, {
         method: "POST",
         body: formData,
+        credentials: "include",
       })
       if (response.ok) {
         const data = await response.json()
@@ -35,13 +40,48 @@ function Room() {
     }
   }
   useEffect(() => {
-    fetch(`/api/room/${roomId}`)
+    fetch(`/api/room/${roomId}`, {
+      credentials: "include",
+    })
       .then((response) => response.json())
       .then((result) => {
         console.log(result)
         setRoom(result.room)
       })
   }, [roomId])
+
+  function handleInviteSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    const userId = parseInt(invitedUser)
+    if (isNaN(userId) || !roomId) {
+      alert("Please enter a valid user ID")
+      return
+    }
+    fetch("/api/invite", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        invitedUserId: userId,
+        roomId: parseInt(roomId),
+        invite_text: inviteText,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert("Invitation sent successfully")
+          setInvitedUser("")
+        } else {
+          alert("Failed to send invitation")
+        }
+      })
+      .catch((error) => {
+        console.error("Error sending invite:", error)
+        alert("Error sending invitation")
+      })
+  }
   return (
     <>
       <h1>{room?.room_name}</h1>
@@ -71,6 +111,23 @@ function Room() {
           </form>
         </div>
       </section>
+      <button>Invite to room</button>
+      <form onSubmit={handleInviteSubmit}>
+        <label htmlFor="user">Enter the user id to invite</label>
+        <input
+          name="user"
+          type="text"
+          value={invitedUser}
+          onChange={(e) => setInvitedUser(e.target.value)}
+        />
+        <label htmlFor="inviteText">Invite message</label>
+        <textarea
+          name="inviteText"
+          value={inviteText}
+          onChange={(e) => setInviteText(e.target.value)}
+        />
+        <button type="submit">Send invite</button>
+      </form>
     </>
   )
 }
