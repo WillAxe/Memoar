@@ -2,16 +2,38 @@
 
 //intercept the fetch request when logging in and mock the api response from the backend
 Cypress.Commands.add("login", () => {
+  cy.visit("/")
+  cy.window().then((win) => {
+    win.localStorage.setItem("userID", "1")
+  })
   cy.intercept("POST", "/api/login", {
     statusCode: 200,
     body: { user_id: 1 },
   }).as("login")
-  cy.visit("/login")
+
+  cy.intercept("GET", /\/api\/user\/.*/, {
+    statusCode: 200,
+    body: {
+      user_id: 1,
+      user_name: "Test User",
+    },
+  }).as("getUser")
+
+  cy.intercept("GET", /\/api\/user\/.*\/feed/, {
+    statusCode: 200,
+    body: [],
+  }).as("getFeed")
+
+  cy.get("[data-cy='login-link']").click()
   cy.get('[data-cy="mail-input-lgn"]').type("test@example.com")
   cy.get('[data-cy="psw-input-lgn"]').type("password")
   cy.get('[data-cy="login-btn"]').click()
+
   cy.wait("@login")
-  cy.url().should("include", "/landingpage/")
+  cy.wait("@getUser")
+  cy.wait("@getFeed")
+
+  cy.url().should("include", "/landingpage/1")
 })
 
 /* eslint-disable @typescript-eslint/no-namespace */
