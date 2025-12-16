@@ -44,7 +44,6 @@ export async function getNotificationsByUser(
     FROM notifications
     WHERE user_id = $1
       AND handled = false
-       NOW())
     ORDER BY sent_at DESC
   `
 
