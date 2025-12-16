@@ -15,7 +15,7 @@ import postRoutes from "./routes/postRoutes.ts"
 import feedRoutes from "./routes/feedRoutes.ts"
 import notificationRoutes from "./routes/notificationRoutes.ts"
 
-app.use(cors())
+app.use(cors({ origin: "http://localhost:5173", credentials: true }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 

@@ -12,6 +12,6 @@ const router = Router()
 router.get("/notifications", requireAuth, getNotifications)
 router.post("/:id/read", requireAuth, markAsRead)
 router.post("/:id/accept", requireAuth, acceptInvite)
-router.post("/invite", roomInvite)
+router.post("/invite", requireAuth, roomInvite)
 
 export default router
