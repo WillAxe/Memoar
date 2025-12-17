@@ -6,6 +6,6 @@ When I see a new invitation
 Then It should show me that I have an new invitation
 
 Scenario: No new invitations
-Given Im logged in
+Given Im logged in for the first time without new invitations
 When I check my notification inbox
 Then I should see no new messages

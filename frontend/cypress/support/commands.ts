@@ -1,45 +1,68 @@
 /// <reference types="cypress" />
 
 //intercept the fetch request when logging in and mock the api response from the backend
-Cypress.Commands.add("login", () => {
-  cy.visit("/")
-  cy.window().then((win) => {
-    win.localStorage.setItem("userID", "1")
-  })
-  cy.intercept("POST", "/api/login", {
-    statusCode: 200,
-    body: { user_id: 1 },
-  }).as("login")
+Cypress.Commands.add(
+  "login",
+  ({ notifications = null }: { notifications?: Notifications[] } = {}) => {
+    cy.intercept("POST", "/api/login", {
+      statusCode: 200,
+      body: { user_id: 1 },
+    }).as("login")
 
-  cy.intercept("GET", /\/api\/user\/.*/, {
-    statusCode: 200,
-    body: {
-      user_id: 1,
-      user_name: "Test User",
-    },
-  }).as("getUser")
+    cy.intercept("GET", /\/api\/user\/.*/, {
+      statusCode: 200,
+      body: {
+        user_id: 1,
+        user_name: "Test User",
+      },
+    }).as("getUser")
 
-  cy.intercept("GET", /\/api\/user\/.*\/feed/, {
-    statusCode: 200,
-    body: [],
-  }).as("getFeed")
+    cy.intercept("GET", /\/api\/notifications/, {
+      statusCode: 200,
+      body: notifications,
+    }).as("getNotifications")
 
-  cy.get("[data-cy='login-link']").click()
-  cy.get('[data-cy="mail-input-lgn"]').type("test@example.com")
-  cy.get('[data-cy="psw-input-lgn"]').type("password")
-  cy.get('[data-cy="login-btn"]').click()
+    cy.intercept("GET", /\/api\/user\/.*\/feed/, {
+      statusCode: 200,
+      body: [],
+    }).as("getFeed")
 
-  cy.wait("@login")
-  cy.wait("@getUser")
-  cy.wait("@getFeed")
+    cy.visit("/")
+    cy.window().then((win) => {
+      win.localStorage.setItem("userID", "1")
+    })
 
-  cy.url().should("include", "/landingpage/1")
-})
+    cy.get("[data-cy='login-link']").click()
+    cy.get('[data-cy="mail-input-lgn"]').type("test@example.com")
+    cy.get('[data-cy="psw-input-lgn"]').type("password")
+    cy.get('[data-cy="login-btn"]').click()
+
+    cy.wait("@login")
+    cy.wait("@getUser")
+    cy.wait("@getFeed")
+    cy.wait("@getNotifications")
+    cy.url().should("include", "/landingpage/1")
+  }
+)
 
 /* eslint-disable @typescript-eslint/no-namespace */
+interface Notifications {
+  notification_id: number
+  user_id: number
+  room_id: number
+  invite_text: string
+  is_read: boolean
+  handled: boolean
+  sent_at: Date
+}
+
+interface LoginParams {
+  notifications?: null | Notifications[]
+}
+
 declare namespace Cypress {
   interface Chainable {
-    login(): Chainable<Element>
+    login(options?: LoginParams): Chainable<Element>
   }
 }
 // ***********************************************
