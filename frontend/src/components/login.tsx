@@ -22,6 +22,7 @@ function Login() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ user_mail: email, user_password: password }),
       })
 

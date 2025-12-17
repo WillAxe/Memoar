@@ -41,3 +41,19 @@ export type FeedItem = {
 export interface RoomFormData {
   room_name: string
 }
+
+export interface InviteFormData {
+  user_id: number
+  room_id: number
+  invite_text: string
+}
+
+export type Notification = {
+  notification_id: number
+  user_id: number
+  room_id: number
+  invite_text: string | null
+  is_read: boolean
+  handled: boolean
+  sent_at: string
+}

@@ -1,0 +1,29 @@
+.notification-container {
+  position: relative;
+  display: inline-block;
+  margin-left: 60px;
+}
+
+.tooltip {
+  position: absolute;
+  top: 45%;
+  left: 55%;
+  transform: translateX(-50%);
+  background-color: #333333;
+  color: #eeeeee;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  box-shadow: 0 5px 10px #49484833;
+  z-index: 10;
+}
+
+.new-msg {
+  border-color: #f34646;
+  color: #f34646;
+}
+
+.notification-trigger {
+  cursor: pointer;
+}
