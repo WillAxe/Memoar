@@ -6,6 +6,7 @@ import type {
   SendPayload,
   ApiUserResponse,
 } from "./static/interfaces"
+import "../css/signup.css"
 
 function SignUp() {
   const navigate = useNavigate()
@@ -16,6 +17,10 @@ function SignUp() {
     birthday: "",
     age: 0,
   })
+
+  const [validateEmail, setValidateEmail] = useState<boolean>(true)
+  const [validatePassword, setValidatePassword] = useState<boolean>(true)
+  const [showSuccess, setShowSuccess] = useState<boolean>(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -44,6 +49,7 @@ function SignUp() {
         localStorage.setItem("userID", userId.toString())
         sessionStorage.setItem("isLoggedIn", true.toString())
         setFormData({ name: "", email: "", password: "", birthday: "", age: 0 })
+        setShowSuccess(true)
         navigate(`/landingpage/${userId}`)
       } else {
         let msg: string = "Something went wrong when creating the account"
@@ -65,6 +71,24 @@ function SignUp() {
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target
 
+    if (name === "email") {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+      if (!emailRegex.test(value)) {
+        setValidateEmail(false)
+        return
+      } else setValidateEmail(true)
+    }
+
+    if (name === "password") {
+      const passwordRegex = /^[a-zA-Z-9]{4,}$/
+      if (!passwordRegex.test(value)) {
+        setValidatePassword(false)
+        return
+      } else {
+        setValidatePassword(true)
+      }
+    }
+
     const parsedAge = type === "number" ? Number(value) : value
 
     setFormData((prev) => ({
@@ -75,6 +99,11 @@ function SignUp() {
 
   return (
     <>
+      {showSuccess && (
+        <div data-cy="signup-notification-msg" className="signup-success">
+          Successfully created your account!
+        </div>
+      )}
       <div>
         <h1>Create Account</h1>
         <p>
@@ -95,21 +124,35 @@ function SignUp() {
             email *:
             <input
               data-cy="mail-input-signup"
+              className={`input-field ${
+                validateEmail ? "correct-input" : "wrong-input"
+              }`}
               onChange={handleChange}
               type="email"
               name="email"
               required
             />
+            {!validateEmail && (
+              <small style={{ color: "red" }}>Invalid email format</small>
+            )}
           </label>
           <label>
             password *:
             <input
               data-cy="psw-input-signup"
               onChange={handleChange}
+              className={`input-field ${
+                validatePassword ? "correct-input" : "wrong-input"
+              }`}
               type="password"
               name="password"
               required
             />
+            {!validatePassword && (
+              <small style={{ color: "red" }}>
+                Password need to be 4 character or more long
+              </small>
+            )}
           </label>
 
           <label>
@@ -126,6 +169,7 @@ function SignUp() {
               data-cy="signup-btn"
               type="submit"
               value=" Create Account/Sign Up"
+              disabled={!validateEmail || !validatePassword}
             ></input>
           </div>
         </form>

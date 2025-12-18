@@ -1,0 +1,51 @@
+.input-field {
+}
+
+.correct-input:focus {
+  outline: none;
+  border: 3px solid;
+  border-image: linear-gradient(
+      94deg,
+      rgba(42, 155, 51, 1) 0%,
+      rgba(43, 130, 84, 1) 51%,
+      rgba(51, 242, 34, 1) 100%
+    )
+    1;
+}
+
+.wrong-input:focus {
+  outline: none;
+  border: solid 3px;
+  border-image: linear-gradient(
+      90deg,
+      rgba(237, 43, 43, 1) 0%,
+      rgba(245, 94, 29, 1) 55%,
+      rgba(252, 176, 69, 1) 100%
+    )
+    1;
+}
+
+.signup-success {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #22c55e;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
+  z-index: 1000;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

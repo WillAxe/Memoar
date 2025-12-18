@@ -20,11 +20,12 @@ describe("the page and make sure that it loads and test the basic functionlaity 
 
   it("presses on the login link and login the user", () => {
     cy.get("[data-cy='login-link']").click()
-    // cy.get("[data-cy='name-input-lgn']").type("Will")
-    cy.get("[data-cy='mail-input-lgn']").type("will@example.com")
-    cy.get("[data-cy='mail-input-lgn']").should("have.class", "correct-input")
-    cy.get("[data-cy='psw-input-lgn']").type("Will")
-    cy.get("[data-cy='psw-input-lgn']").should("have.class", "correct-input")
+    cy.get("[data-cy='mail-input-lgn']")
+      .type("test@example.com")
+      .should("have.class", "correct-input")
+    cy.get("[data-cy='psw-input-lgn']")
+      .type("password")
+      .should("have.class", "correct-input")
     cy.get("[data-cy='login-btn']").click()
 
     cy.get("[data-cy='login-notification-msg']").contains(
@@ -33,24 +34,35 @@ describe("the page and make sure that it loads and test the basic functionlaity 
   })
 
   it("enter wrong mail or password", () => {
-    cy.visit("/login")
-    cy.get("[data-cy='mail-input-lgn']").type("will3example.")
-    cy.get("[data-cy='mail-input-lgn']").should("have.class", "wrong-input")
-    cy.get("[data-cy='psw-input-lgn']").type("w43ll")
-    cy.get("[data-cy='psw-input-lgn']").should("have.class", "wrong-input")
+    cy.visit("/#/login")
+    cy.get("[data-cy='mail-input-lgn']")
+      .type("will3example.")
+      .should("have.class", "wrong-input")
+    cy.get("[data-cy='psw-input-lgn']")
+      .type("w43")
+      .should("have.class", "wrong-input")
   })
 
   it("signup and creates a account", () => {
-    cy.visit("/signup")
-    cy.get("[data-cy='name-input-signup']").type("Alfred")
-    cy.get("[data-cy='mail-input-signup']").type("alfred@example.com")
-    cy.get("[data-cy='mail-input-signup']").should(
-      "have.class",
-      "correct-input"
-    )
+    cy.get("[data-cy='signup-link']").click()
+    cy.get("[data-cy='name-input-signup']").type("Test")
+    cy.get("[data-cy='mail-input-signup']")
+      .type("test@example.com")
+      .should("have.class", "correct-input")
     cy.get("[data-cy='psw-input-signup']").type("password")
     cy.get("[data-cy='psw-input-signup']").should("have.class", "correct-input")
 
+    cy.intercept("POST", "api/users", {
+      body: {
+        user_id: 1,
+        user_name: "Test",
+        user_mail: "test@@example.com",
+        user_password: "password",
+        user_birthday: "2002-03-15",
+        user_age: 0,
+      },
+    }).as("createUser")
+    cy.get("@createUser")
     cy.get("[data-cy='signup-btn']").click()
 
     cy.get("[data-cy='signup-notification-msg']").contains(
@@ -59,10 +71,10 @@ describe("the page and make sure that it loads and test the basic functionlaity 
   })
 
   it("wrong format on mail and password", () => {
-    cy.visit("/signup")
+    cy.visit("/#/signup")
     cy.get("[data-cy='mail-input-signup']").type("will3example.")
     cy.get("[data-cy='mail-input-signup']").should("have.class", "wrong-input")
-    cy.get("[data-cy='psw-input-singup']").type("w43ll")
+    cy.get("[data-cy='psw-input-signup']").type("w43")
     cy.get("[data-cy='psw-input-signup']").should("have.class", "wrong-input")
   })
 })
