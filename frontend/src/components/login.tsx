@@ -8,10 +8,24 @@ function Login() {
   const navigate = useNavigate()
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
-  const [correctInput, setCorrectInput] = useState<boolean>(false)
+  const [validateEmail, setValidateEmail] = useState<boolean>(false)
+  const [validatePassword, setValidatePassword] = useState<boolean>(false)
+  const [loginFailed, setLoginFailed] = useState<boolean>(false)
+  const [showLoginSuccess, setShowLoginSuccess] = useState<boolean>(false)
 
-  function toogleClass() {
-    setCorrectInput(!correctInput)
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target
+    if (name === "email") {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+      setValidateEmail(emailRegex.test(value))
+      setEmail(value)
+    }
+
+    if (name === "password") {
+      const passwordRegex = /^.{4,}$/
+      setValidatePassword(passwordRegex.test(value))
+      setPassword(value)
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,12 +41,16 @@ function Login() {
       })
 
       if (!response.ok) {
+        setLoginFailed(true)
         throw new Error("Wrong credentials")
       }
+
       const data: ApiUserResponse = await response.json()
       const userId: number = data.user_id
       localStorage.setItem("userID", userId.toString())
       sessionStorage.setItem("isLoggedIn", true.toString())
+      setShowLoginSuccess(true)
+      setLoginFailed(false)
       navigate(`/landingpage/${userId}`)
     } catch (error) {
       alert("Login failed, check your credentials")
@@ -42,6 +60,11 @@ function Login() {
 
   return (
     <>
+      {showLoginSuccess && (
+        <div data-cy="login-notification-msg" className="login-success">
+          Successfully logged in!
+        </div>
+      )}
       <div>
         <h1>Login</h1>
         <Link to="/">go back</Link>
@@ -49,11 +72,15 @@ function Login() {
           <label>
             email *:
             <input
-              onChange={(e) => {
-                setEmail(e.target.value)
-                toogleClass()
-              }}
+              onChange={handleChange}
               data-cy="mail-input-lgn"
+              className={
+                loginFailed
+                  ? "wrong-input"
+                  : validateEmail
+                  ? "correct-input"
+                  : "wrong-input"
+              }
               type="email"
               name="email"
               required
@@ -62,8 +89,15 @@ function Login() {
           <label>
             password *:
             <input
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChange}
               data-cy="psw-input-lgn"
+              className={
+                loginFailed
+                  ? "wrong-input"
+                  : validatePassword
+                  ? "correct-input"
+                  : "wrong-input"
+              }
               type="password"
               name="password"
               required

@@ -20,7 +20,6 @@ function SignUp() {
 
   const [validateEmail, setValidateEmail] = useState<boolean>(true)
   const [validatePassword, setValidatePassword] = useState<boolean>(true)
-  const [showSuccess, setShowSuccess] = useState<boolean>(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -49,7 +48,6 @@ function SignUp() {
         localStorage.setItem("userID", userId.toString())
         sessionStorage.setItem("isLoggedIn", true.toString())
         setFormData({ name: "", email: "", password: "", birthday: "", age: 0 })
-        setShowSuccess(true)
         navigate(`/landingpage/${userId}`)
       } else {
         let msg: string = "Something went wrong when creating the account"
@@ -99,11 +97,6 @@ function SignUp() {
 
   return (
     <>
-      {showSuccess && (
-        <div data-cy="signup-notification-msg" className="signup-success">
-          Successfully created your account!
-        </div>
-      )}
       <div>
         <h1>Create Account</h1>
         <p>

@@ -26,8 +26,12 @@ describe("the page and make sure that it loads and test the basic functionlaity 
     cy.get("[data-cy='psw-input-lgn']")
       .type("password")
       .should("have.class", "correct-input")
+    cy.intercept("POST", "/api/login", {
+      statusCode: 200,
+      body: { user_id: 1, user_name: "Test User" },
+    }).as("login")
     cy.get("[data-cy='login-btn']").click()
-
+    cy.wait("@login")
     cy.get("[data-cy='login-notification-msg']").contains(
       "Successfully logged in!"
     )
@@ -35,12 +39,11 @@ describe("the page and make sure that it loads and test the basic functionlaity 
 
   it("enter wrong mail or password", () => {
     cy.visit("/#/login")
-    cy.get("[data-cy='mail-input-lgn']")
-      .type("will3example.")
-      .should("have.class", "wrong-input")
-    cy.get("[data-cy='psw-input-lgn']")
-      .type("w43")
-      .should("have.class", "wrong-input")
+    cy.get("[data-cy='mail-input-lgn']").type("will3example.")
+    cy.get("[data-cy='psw-input-lgn']").type("w43")
+    cy.get("[data-cy='login-btn']").click()
+    cy.get("[data-cy='mail-input-lgn']").should("have.class", "wrong-input")
+    cy.get("[data-cy='psw-input-lgn']").should("have.class", "wrong-input")
   })
 
   it("signup and creates a account", () => {
@@ -64,7 +67,7 @@ describe("the page and make sure that it loads and test the basic functionlaity 
     }).as("createUser")
     cy.get("@createUser")
     cy.get("[data-cy='signup-btn']").click()
-
+    // cy.login()
     cy.get("[data-cy='signup-notification-msg']").contains(
       "Successfully created your account!"
     )

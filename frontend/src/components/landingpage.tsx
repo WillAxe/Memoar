@@ -18,6 +18,7 @@ function LandingPage() {
   const [newInvites, setNewInvites] = useState<boolean>(false)
   const [notifications, setNotifications] = useState<boolean>(false)
   const [isVisible, setIsVisible] = useState<boolean>(false)
+  const [showSuccess, setShowSuccess] = useState<boolean>(false)
 
   useEffect(() => {
     fetch(`/api/user/${userId}`)
@@ -41,11 +42,17 @@ function LandingPage() {
           (n: Notification) => !n.is_read && !n.handled
         )
         setNewInvites(hasUnreadInvite)
+        setShowSuccess(true)
       })
   }, [])
 
   return (
     <>
+      {showSuccess && (
+        <div data-cy="signup-notification-msg" className="signup-success">
+          Successfully created your account!
+        </div>
+      )}
       <div
         data-cy="notification-inbox"
         data-has-new={newInvites}
