@@ -46,6 +46,16 @@ function LandingPage() {
       })
   }, [])
 
+  useEffect(() => {
+    if (showSuccess) {
+      const timer = setTimeout(() => {
+        setShowSuccess(false)
+      }, 3000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [showSuccess])
+
   return (
     <>
       {showSuccess && (

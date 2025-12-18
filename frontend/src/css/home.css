@@ -1,0 +1,17 @@
+.image-fade {
+  display: none;
+  animation: fade 0.5s ease;
+}
+
+.image-fade.active {
+  display: block;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
