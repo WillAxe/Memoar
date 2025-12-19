@@ -4,7 +4,7 @@ import UploadPhoto from "../assets/upload-image.jpg"
 import "../css/home.css"
 import { useState } from "react"
 function Home() {
-  const [slideIndex, setSlideIndex] = useState<number>(1)
+  const [slideIndex, setSlideIndex] = useState<number>(0)
 
   const slides = [
     {
@@ -42,19 +42,35 @@ function Home() {
       </a>
 
       <div className="slideshow-container">
-        {slides.map((slide, index) => (
-          <div
-            key={index}
-            className={`image-fade ${index === slideIndex ? "active" : ""}`}
-          >
-            <img className="image" src={slide.img} alt={slide.alt} />
-            <p className="caption-text">{slide.text}</p>
-          </div>
-        ))}
-        <button className="prev" onClick={() => changeSlide(-1)}>
+        {slides.map(
+          (
+            slide: { img: string; alt: string; text: string },
+            index: number
+          ) => (
+            <div
+              key={index}
+              data-cy="slideshow-image"
+              className={`image-fade ${index === slideIndex ? "active" : ""}`}
+            >
+              <img className="image" src={slide.img} alt={slide.alt} />
+              <p data-cy="caption-text" className="caption-text">
+                {slide.text}
+              </p>
+            </div>
+          )
+        )}
+        <button
+          data-cy="change-slide-btn"
+          className="prev"
+          onClick={() => changeSlide(-1)}
+        >
           &lt;
         </button>
-        <button className="next" onClick={() => changeSlide(1)}>
+        <button
+          data-cy="change-slide-btn"
+          className="next"
+          onClick={() => changeSlide(1)}
+        >
           &gt;
         </button>
       </div>
@@ -66,7 +82,7 @@ function Home() {
         </p>
 
         <p>
-          Just create a room and you have yourself a photo album ready for
+          Just create a room and you have yourself a photo album ready for your
           pictures
         </p>
       </article>

@@ -6,6 +6,44 @@ describe("the page and make sure that it loads and test the basic functionlaity 
     cy.get("h1").should("exist")
   })
 
+  it("shows the first image in the slideshow and have next and prevoius buttons", () => {
+    cy.get("[data-cy='slideshow-image'].active").within(() => {
+      cy.get("img")
+        .should("exist")
+        .and("have.attr", "alt", "Photo album example")
+        .and("have.attr", "src")
+        .and("include", "Photo-album-ex")
+      cy.get("[data-cy='caption-text']").should(
+        "contain",
+        "Collect memories in your own rooms"
+      )
+    })
+    cy.get("[data-cy='change-slide-btn'].next").should("exist")
+    cy.get("[data-cy='change-slide-btn'].prev").should("exist")
+  })
+
+  //Tests for testing the slideshow buttons
+  it("has working buttons for showing the previous and next pictures in the slideshow", () => {
+    cy.get("[data-cy='change-slide-btn'].next").click()
+
+    cy.get("[data-cy='slideshow-image'].active").within(() => {
+      cy.get("img").should("have.attr", "alt", "an image of creating a room")
+
+      cy.get(".caption-text").should("contain", "1. Create a room")
+    })
+
+    cy.get("[data-cy='change-slide-btn'].prev").click()
+
+    cy.get("[data-cy='slideshow-image'].active").within(() => {
+      cy.get("img").should("have.attr", "alt", "Photo album example")
+
+      cy.get(".caption-text").should(
+        "contain",
+        "Collect memories in your own rooms"
+      )
+    })
+  })
+
   it("has a navbar for user to navigate with", () => {
     cy.get("[data-cy='navigation-bar']").should("exist")
     cy.get("[data-cy='navigation-bar']").within(() => {
@@ -67,7 +105,6 @@ describe("the page and make sure that it loads and test the basic functionlaity 
     }).as("createUser")
     cy.get("@createUser")
     cy.get("[data-cy='signup-btn']").click()
-    // cy.login()
     cy.get("[data-cy='signup-notification-msg']").contains(
       "Successfully created your account!"
     )

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import type { ApiUserResponse } from "./static/interfaces"
 import { Link } from "react-router-dom"
@@ -51,12 +51,24 @@ function Login() {
       sessionStorage.setItem("isLoggedIn", true.toString())
       setShowLoginSuccess(true)
       setLoginFailed(false)
-      navigate(`/landingpage/${userId}`)
+
+      setTimeout(() => {
+        navigate(`/landingpage/${userId}`)
+      }, 3000)
     } catch (error) {
       alert("Login failed, check your credentials")
       console.error("Login error:", error)
     }
   }
+
+  useEffect(() => {
+    if (showLoginSuccess) {
+      const timer = setTimeout(() => {
+        setShowLoginSuccess(false)
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [showLoginSuccess])
 
   return (
     <>
