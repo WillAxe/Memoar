@@ -11,31 +11,6 @@ interface Notification {
   sent_at: Date
 }
 
-// export function getNotificationsByUser(
-//   userId: number
-// ): Promise<Notification[]> {
-//   return new Promise<Notification[]>((resolve, reject) => {
-//     const query = `
-//       SELECT *
-//       FROM notifications
-//       WHERE user_id = $1
-//         AND handled = false
-//       ORDER BY sent_at DESC
-//     `
-//     database.query<Notification>(
-//       query,
-//       [userId],
-//       (err: Error, res: QueryResult<Notification>) => {
-//         if (err) {
-//           reject(err)
-//         } else {
-//           resolve(res.rows)
-//         }
-//       }
-//     )
-//   })
-// }
-
 export async function getNotificationsByUser(
   userId: number
 ): Promise<Notification[]> {
@@ -51,26 +26,6 @@ export async function getNotificationsByUser(
   return result.rows
 }
 
-// export function markNotificationAsRead(
-//   notificationId: number
-// ): Promise<Notification> {
-//   return new Promise<Notification>((resolve, reject) => {
-//     const query =
-//       "UPDATE notifications SET is_read = true WHERE notification_id = $1"
-//     database.query<Notification>(
-//       query,
-//       [notificationId],
-//       (err: Error, res: QueryResult) => {
-//         if (err) {
-//           reject(err)
-//         } else {
-//           resolve(res.rows[0])
-//         }
-//       }
-//     )
-//   })
-// }
-
 export async function markNotificationAsRead(
   notificationId: number
 ): Promise<void> {
@@ -81,48 +36,6 @@ export async function markNotificationAsRead(
   `
   await database.query(query, [notificationId])
 }
-
-// export function acceptRoomInvite(
-//   notificationId: number,
-//   userId: number
-// ): Promise<Notification> {
-//   return new Promise<Notification>((resolve, reject) => {
-//     const query = "SELECT * FROM notifications WHERE notification_id = $1"
-//     database.query<Notification>(
-//       query,
-//       [notificationId],
-//       (err: Error, res: QueryResult<Notification>) => {}
-//     )
-//   })
-//   await database.query("BEGIN")
-
-//   try {
-//     const { rows } = await database.query<Notification>(
-//       "SELECT * FROM notifications WHERE notification_id = $1",
-//       [notificationId]
-//     )
-
-//     const notification = rows[0]
-//     if (!notification || notification.user_id !== userId) {
-//       throw new Error("Unauthorized")
-//     }
-
-//     await database.query(
-//       "INSERT INTO room_users (room_id, user_id) VALUES ($1, $2)",
-//       [notification.room_id, userId]
-//     )
-
-//     await database.query(
-//       "UPDATE notifications SET handled = true WHERE notification_id = $1",
-//       [notificationId]
-//     )
-
-//     await database.query("COMMIT")
-//   } catch (err) {
-//     await database.query("ROLLBACK")
-//     throw err
-//   }
-// }
 
 export async function acceptRoomInvite(
   notificationId: number,
@@ -151,7 +64,7 @@ export async function acceptRoomInvite(
     }
 
     await database.query(
-      "INSERT INTO room_users (room_id, user_id) VALUES ($1, $2)",
+      "INSERT INTO user_rooms (room_id, user_id) VALUES ($1, $2)",
       [notification.room_id, userId]
     )
 

@@ -28,5 +28,14 @@ module.exports = defineConfig({
       // Tillägg för Cucumber
       "cypress/e2e/**/*.feature",
     ],
+    supportFile: "cypress/support/e2e.ts",
+    tsConfig: "cypress/tsconfig.json",
+  },
+
+  component: {
+    devServer: {
+      framework: "react",
+      bundler: "vite",
+    },
   },
 })

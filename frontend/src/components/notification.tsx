@@ -67,18 +67,23 @@ function Notifications() {
   return (
     <div className="notifications-wrapper">
       {!notifications || notifications?.length === 0 ? (
-        <p>No notifications</p>
+        <p>No notifications!</p>
       ) : (
         <ul>
           {notifications?.map((notice) => (
-            <li key={notice.notification_id}>
-              <p className="text">{notice.invite_text}</p>
-              <p className="text">Room ID: {notice.room_id}</p>
-              <p className="text">
+            <li data-cy="notification-obj" key={notice.notification_id}>
+              <p data-cy="invite-text" className="text">
+                {notice.invite_text}
+              </p>
+              <p data-cy="room-id" className="text">
+                Room ID: {notice.room_id}
+              </p>
+              <p data-cy="sent-date" className="text">
                 Sent at: {new Date(notice.sent_at).toLocaleString()}
               </p>
               {!notice.is_read && (
                 <button
+                  data-cy="btn-read"
                   className="notification-actions"
                   onClick={() => markAsRead(notice.notification_id)}
                 >
@@ -87,6 +92,7 @@ function Notifications() {
               )}
               {notice.invite_text && !notice.handled && (
                 <button
+                  data-cy="btn-accept"
                   className="notification-actions"
                   onClick={() => acceptInvite(notice.notification_id)}
                 >
