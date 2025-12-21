@@ -23,11 +23,7 @@ function UserRooms() {
           : rooms?.map((room) => (
               <div data-cy="room-card" className="room-card" key={room.room_id}>
                 <h2 data-cy="room-name-card">{`${room.room_name}`}</h2>
-                <LinkTo
-                  data-cy="link-to-specific-room"
-                  body={room}
-                  bodies="room"
-                ></LinkTo>
+                <LinkTo body={room} bodies="room"></LinkTo>
               </div>
             ))}
       </section>
