@@ -1,5 +1,5 @@
 // import { Link } from "react-router-dom"
-
+import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import type {
   ApiUserResponse,
@@ -10,9 +10,8 @@ import "../css/landingpage.css"
 import "./notification"
 import Notifications from "./notification"
 
-const userId: string = localStorage.getItem("userID")!
-
 function LandingPage() {
+  const { userId } = useParams()
   const [user, setUser] = useState<ApiUserResponse | null>(null)
   const [feed, setFeed] = useState<FeedItem[]>([])
   const [newInvites, setNewInvites] = useState<boolean>(false)
@@ -21,6 +20,8 @@ function LandingPage() {
   const [showSuccess, setShowSuccess] = useState<boolean>(false)
 
   useEffect(() => {
+    const userId: string = localStorage.getItem("userID")!
+    if (!userId) return
     fetch(`/api/user/${userId}`)
       .then((response) => response.json())
       .then((result: { user: ApiUserResponse }) => {
@@ -28,8 +29,8 @@ function LandingPage() {
       })
     fetch(`/api/user/${userId}/feed`)
       .then((response) => response.json())
-      .then((result: { feed: FeedItem[] }) => {
-        setFeed(result.feed)
+      .then((result: { feed: FeedItem[] | null }) => {
+        setFeed(Array.isArray(result.feed) ? result.feed : [])
       })
 
     fetch(`/api/notifications`, {
@@ -44,7 +45,7 @@ function LandingPage() {
         setNewInvites(hasUnreadInvite)
         setShowSuccess(true)
       })
-  }, [])
+  }, [userId])
 
   useEffect(() => {
     if (showSuccess) {
@@ -91,28 +92,33 @@ function LandingPage() {
           </div>
         )}
       </div>
-      <h1>{user ? `Welcome ${user.user_name}!` : "None"}</h1>
+      <h1 data-cy="h1-title">{user ? `Welcome ${user.user_name}!` : "None"}</h1>
       <main>
-        <section className="start-feed">
-          {!feed || (feed.length === 0 && <p>No reqent activity!</p>)}
+        <section data-cy="recent-activity-feed" className="start-feed">
+          {feed?.length === 0 && (
+            <p data-cy="no-activity">No recent activity!</p>
+          )}
           {feed?.map((item, index) => (
-            <article key={index} className="feed-card">
-              {item.type === "room-created" && (
-                <>
-                  <h3>New room created</h3>
-                  <p>
+            <article
+              data-cy="activity-feed-card"
+              key={index}
+              className="feed-card"
+            >
+              <h3 data-cy="feed-title">
+                {" "}
+                {item.type === "room-created" && "New room created"}{" "}
+                {item.type === "post" && "New post in"}
+              </h3>
+              <p data-cy="activity-info">
+                {item.type === "room-created" && (
+                  <>
                     You created <strong>{item.roomName}</strong>
-                  </p>
-                  <small>{new Date(item.createdAt).toLocaleString()}</small>
-                </>
-              )}
-              {item.type === "post" && (
-                <>
-                  <h3>New post in {item.roomName}</h3>
-                  <p>{item.content}</p>
-                  <small>{new Date(item.createdAt).toLocaleString()}</small>
-                </>
-              )}
+                  </>
+                )}
+                {""}
+                {item.type === "post" && `${item.content}`}
+              </p>
+              <small>{new Date(item.createdAt).toLocaleString()}</small>
             </article>
           ))}
         </section>

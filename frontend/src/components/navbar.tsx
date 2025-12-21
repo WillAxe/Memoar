@@ -14,11 +14,19 @@ function Navbar() {
               Home
             </Link>
 
-            <Link to={`/landingpage/rooms/${userid}`} className="navLink">
+            <Link
+              data-cy="user-specific-rooms"
+              to={`/landingpage/rooms/${userid}`}
+              className="navLink"
+            >
               Your rooms
             </Link>
 
-            <Link to={`/landingpage/${userid}/newroom`} className="navLink">
+            <Link
+              data-cy="create-room-link"
+              to={`/landingpage/${userid}/newroom`}
+              className="navLink"
+            >
               Create new room
             </Link>
 

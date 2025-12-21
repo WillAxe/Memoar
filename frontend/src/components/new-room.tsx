@@ -40,10 +40,21 @@ function NewRoom() {
       <main>
         <div onClick={() => setIsVisible(!isVisible)}>Create a new room</div>
         {isVisible && (
-          <form onSubmit={handleSubmit} className="create-new-form">
+          <form
+            data-cy="create-room-form"
+            onSubmit={handleSubmit}
+            className="create-new-form"
+          >
             <label htmlFor="room">Room Name:</label>
-            <input type="text" name="room_name" onChange={handleChange} />
-            <button type="submit">Create room!</button>
+            <input
+              data-cy="room-name-input"
+              type="text"
+              name="room_name"
+              onChange={handleChange}
+            />
+            <button data-cy="submit-data-btn" type="submit">
+              Create room!
+            </button>
           </form>
         )}
       </main>

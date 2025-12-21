@@ -13,7 +13,12 @@ function LinkTo({ body, bodies }: LinkToProps) {
   localStorage.setItem("roomID", roomId.toString())
   return (
     <>
-      <Link to={`/landingpage/${userId}/${bodies}/${roomId}`}>Click here</Link>
+      <Link
+        to={`/landingpage/${userId}/${bodies}/${roomId}`}
+        data-cy="link-to-specific-room"
+      >
+        Click here
+      </Link>
     </>
   )
 }

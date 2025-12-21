@@ -3,7 +3,13 @@
 //intercept the fetch request when logging in and mock the api response from the backend
 Cypress.Commands.add(
   "login",
-  ({ notifications = null }: { notifications?: Notifications[] } = {}) => {
+  ({
+    notifications = null,
+    feed = [],
+  }: {
+    notifications?: Notifications[] | null
+    feed?: Feed[]
+  }) => {
     cy.intercept("POST", "/api/login", {
       statusCode: 200,
       body: { user_id: 1 },
@@ -12,8 +18,10 @@ Cypress.Commands.add(
     cy.intercept("GET", /\/api\/user\/.*/, {
       statusCode: 200,
       body: {
-        user_id: 1,
-        user_name: "Test User",
+        user: {
+          user_id: 1,
+          user_name: "Test User",
+        },
       },
     }).as("getUser")
 
@@ -24,7 +32,9 @@ Cypress.Commands.add(
 
     cy.intercept("GET", /\/api\/user\/.*\/feed/, {
       statusCode: 200,
-      body: [],
+      body: {
+        feed: feed,
+      },
     }).as("getFeed")
 
     cy.visit("/")
@@ -56,8 +66,16 @@ interface Notifications {
   sent_at: Date
 }
 
+interface Feed {
+  type: "room-created" | "post"
+  roomName: string
+  createdAt: string
+  content?: string
+}
+
 interface LoginParams {
   notifications?: null | Notifications[]
+  feed?: null | Feed[]
 }
 
 declare namespace Cypress {

@@ -84,7 +84,7 @@ function Room() {
   }
   return (
     <>
-      <h1>{room?.room_name}</h1>
+      <h1 data-cy="room-name-title">{room?.room_name}</h1>
       <section>
         <div className="posts-grid">
           <div className="img-post-card">
@@ -115,6 +115,7 @@ function Room() {
       <form onSubmit={handleInviteSubmit}>
         <label htmlFor="user">Enter the user id to invite</label>
         <input
+          data-cy="invite-user-input"
           name="user"
           type="text"
           value={invitedUser}
