@@ -1,5 +1,5 @@
 import { database } from "../database.ts"
-import type { QueryResult } from "pg"
+import { Query, type QueryResult } from "pg"
 
 interface Post {
   post_id: number
@@ -7,6 +7,11 @@ interface Post {
   image_url: string
   caption: string
   created_at: Date
+}
+
+interface Room {
+  room_id: number
+  posts: Post[]
 }
 
 export function createPost(
@@ -27,5 +32,17 @@ export function createPost(
         }
       }
     )
+  })
+}
+
+export function getPostsByRoomId(room_id: number): Promise<Room> {
+  return new Promise<Room>((resolve, reject) => {
+    const query = "SELECT rooms.room_posts FROM rooms WHERE room_id = $1"
+    database.query<Room>(query, [room_id], (err, res: QueryResult<Room>) => {
+      if (err) reject(err)
+      else {
+        resolve(res.rows[0]!)
+      }
+    })
   })
 }

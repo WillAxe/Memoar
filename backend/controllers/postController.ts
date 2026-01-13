@@ -1,4 +1,5 @@
 import { createPost as createPostService } from "../services/postService.ts"
+import { getPostsByRoomId as getPostsByRoomIdService } from "../services/postService.ts"
 import type { Response, Request } from "express"
 
 interface PostResponse {
@@ -37,5 +38,21 @@ export const createPost = async (
     res.status(201).json({ post })
   } catch (error) {
     res.status(501).json({ message: "Error posting", error })
+  }
+}
+
+//this function handles the functionality of fetching the posts for a singular room
+export const getPostsByRoomId = async (
+  req: Request<{ room_id: string }>,
+  res: Response
+): Promise<void> => {
+  try {
+    const room_id = Number(req.params.room_id)
+    const roomPosts = await getPostsByRoomIdService(room_id)
+    res.status(200).json({ roomPosts })
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching posts for the room", error })
   }
 }
