@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import type { ApiRoomResponse } from "./static/interfaces"
 import LinkTo from "./linkTo.tsx"
+import "../css/user-rooms.css"
 
 const userId: string = localStorage.getItem("userID")!
 function UserRooms() {
@@ -17,7 +18,7 @@ function UserRooms() {
   return (
     <>
       <h1>Hello</h1>
-      <section>
+      <section className="rooms-section-grid">
         {!rooms
           ? "Join a room or create your own and it will show up here"
           : rooms?.map((room) => (
