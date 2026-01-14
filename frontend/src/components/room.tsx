@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import type { ApiRoomResponse } from "./static/interfaces"
 
 function Room() {
-  const roomId = localStorage.getItem("roomID")
+  const roomId = localStorage.getItem("roomID")!
   const [room, setRoom] = useState<ApiRoomResponse>()
   const [file, setFile] = useState<File | null>(null)
   const [caption, setCaption] = useState<string>("")
@@ -21,6 +21,7 @@ function Room() {
       }
       const formData = new FormData()
       formData.append("image", file)
+      formData.append("room_id", roomId)
       formData.append("caption", caption)
       formData.append("user_id", userId)
       console.log(formData)

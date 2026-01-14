@@ -28,7 +28,6 @@ export type ApiRoomResponse = {
   room_id: number
   room_name: string
   created_at: Date | string
-  room_posts: number
 }
 
 export type FeedItem = {

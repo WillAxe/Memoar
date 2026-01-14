@@ -17,14 +17,15 @@ interface Room {
 export function createPost(
   user_id: number,
   caption: string,
-  image_url: string
+  image_url: string,
+  room_id: number
 ): Promise<Post> {
   return new Promise<Post>((resolve, reject) => {
     const query =
-      "INSERT INTO posts(user_id, image_url, caption) VALUES ($1, $2, $3) RETURNING *"
+      "INSERT INTO posts(user_id, image_url, caption, room_id) VALUES ($1, $2, $3, $4) RETURNING *"
     database.query<Post>(
       query,
-      [user_id, caption, image_url],
+      [user_id, caption, image_url, room_id],
       (err: Error, res: QueryResult<Post>) => {
         if (err) reject(err)
         else {
@@ -35,13 +36,14 @@ export function createPost(
   })
 }
 
-export function getPostsByRoomId(room_id: number): Promise<Room> {
-  return new Promise<Room>((resolve, reject) => {
-    const query = "SELECT rooms.room_posts FROM rooms WHERE room_id = $1"
-    database.query<Room>(query, [room_id], (err, res: QueryResult<Room>) => {
+export function getPostsByRoomId(room_id: number): Promise<Post[]> {
+  return new Promise<Post[]>((resolve, reject) => {
+    const query = "SELECT * FROM posts WHERE room_id = $1;"
+    database.query<Post>(query, [room_id], (err, res: QueryResult<Post>) => {
       if (err) reject(err)
       else {
-        resolve(res.rows[0]!)
+        resolve(res.rows)
+        console.log(res.rows)
       }
     })
   })
