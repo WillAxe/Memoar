@@ -16,16 +16,16 @@ interface Room {
 
 export function createPost(
   user_id: number,
-  caption: string,
+  room_id: number,
   image_url: string,
-  room_id: number
+  caption: string
 ): Promise<Post> {
   return new Promise<Post>((resolve, reject) => {
     const query =
-      "INSERT INTO posts(user_id, image_url, caption, room_id) VALUES ($1, $2, $3, $4) RETURNING *"
+      "INSERT INTO posts(user_id, room_id, image_url, caption) VALUES ($1, $2, $3, $4) RETURNING *"
     database.query<Post>(
       query,
-      [user_id, caption, image_url, room_id],
+      [user_id, room_id, image_url, caption],
       (err: Error, res: QueryResult<Post>) => {
         if (err) reject(err)
         else {

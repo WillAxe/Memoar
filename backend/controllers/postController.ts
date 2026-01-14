@@ -5,6 +5,7 @@ import type { Response, Request } from "express"
 interface PostResponse {
   post_id: number
   user_id: number
+  room_id: number
   image_url: string
   caption: string
   created_at: Date
@@ -15,7 +16,7 @@ export const createPost = async (
   req: Request<
     {},
     any,
-    { user_id: string; caption: string; image_url: string; room_id: string }
+    { user_id: string; room_id: string; image_url: string; caption: string }
   >,
   res: Response
 ): Promise<void> => {
@@ -33,7 +34,7 @@ export const createPost = async (
     }
     const image_url = `/uploads/images/${req.file.filename}`
     const room_id = Number(req.body.room_id)
-    const post = await createPostService(user_id, caption, image_url, room_id)
+    const post = await createPostService(user_id, room_id, image_url, caption)
     console.log(req.body)
     console.log(req.file)
     res.status(201).json({ post })
