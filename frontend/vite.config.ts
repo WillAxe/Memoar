@@ -10,6 +10,11 @@ export default defineConfig({
         target: "http://localhost:3000",
         changeOrigin: true,
       },
+      // Handles the route for uploaded images in the production build
+      "/uploads": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+      },
     },
   },
 })

@@ -56,3 +56,12 @@ export type Notification = {
   handled: boolean
   sent_at: string
 }
+
+export type ApiPostResponse = {
+  post_id: number
+  user_id: number
+  room_id: number
+  image_url: string
+  caption: string | null
+  created_at: string
+}
