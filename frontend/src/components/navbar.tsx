@@ -5,6 +5,12 @@ function Navbar() {
   const { userid } = useParams()
   const isLoggedIn = Boolean(userid)
 
+  //make sure that the session is removed
+  function logOut() {
+    localStorage.removeItem("userID")
+    sessionStorage.removeItem("isLoggedIn")
+  }
+
   return (
     <>
       <nav data-cy="navigation-bar">
@@ -30,7 +36,9 @@ function Navbar() {
               Create new room
             </Link>
 
-            <Link to="/">Logout</Link>
+            <Link to="/" onClick={logOut}>
+              Logout
+            </Link>
           </div>
         )}
 

@@ -45,6 +45,7 @@ function SignUp() {
         const data: ApiUserResponse = await response.json()
         console.log(data)
         const userId: number = data.user_id
+        localStorage.removeItem("userID")
         localStorage.setItem("userID", userId.toString())
         sessionStorage.setItem("isLoggedIn", true.toString())
         setFormData({ name: "", email: "", password: "", birthday: "", age: 0 })

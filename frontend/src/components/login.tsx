@@ -47,14 +47,13 @@ function Login() {
 
       const data: ApiUserResponse = await response.json()
       const userId: number = data.user_id
+      localStorage.removeItem("userID")
       localStorage.setItem("userID", userId.toString())
       sessionStorage.setItem("isLoggedIn", true.toString())
       setShowLoginSuccess(true)
       setLoginFailed(false)
 
-      setTimeout(() => {
-        navigate(`/landingpage/${userId}`)
-      }, 3000)
+      navigate(`/landingpage/${userId}`)
     } catch (error) {
       alert("Login failed, check your credentials")
       console.error("Login error:", error)
@@ -65,7 +64,7 @@ function Login() {
     if (showLoginSuccess) {
       const timer = setTimeout(() => {
         setShowLoginSuccess(false)
-      }, 3000)
+      }, 1000)
       return () => clearTimeout(timer)
     }
   }, [showLoginSuccess])

@@ -55,6 +55,10 @@ export const getRoomsForUser = async (
   res: Response<{ rooms: RoomResponse[] } | { error: string }>
 ): Promise<void> => {
   const userId = Number(req.params.id)
+  if (req.session.userId !== userId) {
+    res.status(403).json({ error: "Unathorized, try log in again" })
+    return
+  }
 
   try {
     const roomsFromDb = await getRoomsForUserService(userId)
