@@ -8,13 +8,17 @@ function Room() {
   const [posts, setPosts] = useState<ApiPostResponse[]>([])
   const [file, setFile] = useState<File | null>(null)
   const [caption, setCaption] = useState<string>("")
+  const [activePost, setActivePost] = useState<ApiPostResponse | null>(null)
+  const [activeImage, setActiveImage] = useState<string | null>(null)
   const [invitedUser, setInvitedUser] = useState<string>("")
   const [inviteText, setInviteText] = useState<string>(
     "You have been invited to join this room"
   )
 
   const userId = localStorage.getItem("userID")!
-  const dialogRef = useRef<HTMLDialogElement | null>(null)
+  const inviteDialogRef = useRef<HTMLDialogElement | null>(null)
+  const postDialogRef = useRef<HTMLDialogElement | null>(null)
+  const imageDialogRef = useRef<HTMLDialogElement | null>(null)
 
   async function upload() {
     try {
@@ -88,7 +92,7 @@ function Room() {
       .then((response) => {
         if (response.ok) {
           //Close the dialog modal after inviting
-          dialogRef.current?.close()
+          inviteDialogRef.current?.close()
           setInvitedUser("")
           alert("Invitation sent successfully")
           setInvitedUser("")
@@ -103,11 +107,31 @@ function Room() {
   }
 
   function openInviteForm() {
-    dialogRef.current?.showModal()
+    inviteDialogRef.current?.showModal()
   }
 
   function closeInviteForm() {
-    dialogRef.current?.close()
+    inviteDialogRef.current?.close()
+  }
+
+  function openPost(post: ApiPostResponse) {
+    setActivePost(post)
+    postDialogRef.current?.showModal()
+  }
+
+  function closePost() {
+    postDialogRef.current?.close()
+    setActivePost(null)
+  }
+
+  function expandImage(src: string) {
+    setActiveImage(src)
+    imageDialogRef.current?.showModal()
+  }
+
+  function closeImage() {
+    imageDialogRef.current?.close()
+    setActiveImage(null)
   }
 
   return (
@@ -118,7 +142,11 @@ function Room() {
           {posts?.length === 0
             ? "No posts yet in this room. Be the first to upload!"
             : posts?.map((post) => (
-                <div className="post-card" key={post.post_id}>
+                <div
+                  className="post-card"
+                  onClick={() => openPost(post)}
+                  key={post.post_id}
+                >
                   <img src={post.image_url} alt="Post image" />
                   <div className="post-content">
                     <p className="caption">{post.caption}</p>
@@ -156,7 +184,7 @@ function Room() {
           Invite user to room
         </button>
 
-        <dialog ref={dialogRef} className="invite-dialog">
+        <dialog ref={inviteDialogRef} className="invite-dialog">
           <button
             className="close-btn"
             aria-label="Close Modal"
@@ -186,6 +214,50 @@ function Room() {
           </form>
         </dialog>
       </section>
+
+      {/* This handles the click and make the post popup as modal  */}
+      <dialog ref={postDialogRef} className="post-dialog">
+        <button
+          className="close-btn"
+          aria-label="Close post"
+          onClick={closePost}
+        >
+          ✕
+        </button>
+
+        {activePost && (
+          <div className="post-dialog-content">
+            <img
+              src={activePost.image_url}
+              alt="image"
+              className="post-dialog-image clickable-image"
+              onClick={() => expandImage(activePost.image_url)}
+            />
+
+            <div className="post-dialog-caption">
+              <p>{activePost.caption}</p>
+            </div>
+          </div>
+        )}
+      </dialog>
+
+      <dialog ref={imageDialogRef} className="image-dialog">
+        <button
+          className="close-btn image-close"
+          aria-label="Close image"
+          onClick={closeImage}
+        >
+          ✕
+        </button>
+
+        {activeImage && (
+          <img
+            src={activeImage}
+            alt="Fullscreen"
+            className="image-dialog-img"
+          />
+        )}
+      </dialog>
     </>
   )
 }
