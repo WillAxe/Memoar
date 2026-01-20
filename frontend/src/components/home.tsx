@@ -1,11 +1,12 @@
-import PhotoAlbum from "../assets/Photo-album-ex.jpg"
-import CreateRoom from "../assets/create-room.jpg"
-import UploadPhoto from "../assets/upload-image.jpg"
-import "../css/home.css"
-import { useState } from "react"
+import PhotoAlbum from "../assets/Photo-album-ex.jpg";
+import CreateRoom from "../assets/create-room.jpg";
+import UploadPhoto from "../assets/upload-image.jpg";
+import "../css/home.css";
+import { useState } from "react";
 function Home() {
-  const [slideIndex, setSlideIndex] = useState<number>(0)
+  const [slideIndex, setSlideIndex] = useState<number>(0);
 
+  //This holds the images for the slideshow on the home page
   const slides = [
     {
       img: String(PhotoAlbum),
@@ -22,30 +23,27 @@ function Home() {
       alt: String("an image of uploading a photo"),
       text: String("2. Upload a photo"),
     },
-  ]
+  ];
 
   function changeSlide(n: number) {
     setSlideIndex((prev) => {
-      const next = prev + n
-      if (next < 0) return slides.length - 1
-      if (next >= slides.length) return 0
-      return next
-    })
+      const next = prev + n;
+      if (next < 0) return slides.length - 1;
+      if (next >= slides.length) return 0;
+      return next;
+    });
   }
 
   return (
     <>
       <h1>Memoar</h1>
       <p>Your personal or shared memory gallery for every moment</p>
-      <a href="uml.html" target="_blank">
-        UML Diagram
-      </a>
 
       <div className="slideshow-container">
         {slides.map(
           (
             slide: { img: string; alt: string; text: string },
-            index: number
+            index: number,
           ) => (
             <div
               key={index}
@@ -57,7 +55,7 @@ function Home() {
                 {slide.text}
               </p>
             </div>
-          )
+          ),
         )}
         <button
           data-cy="change-slide-btn"
@@ -74,6 +72,15 @@ function Home() {
           &gt;
         </button>
       </div>
+      <div style={{ textAlign: "center" }}>
+        {slides.map((_, index) => (
+          <span
+            key={index}
+            className={`dot ${index === slideIndex ? "active" : ""}`}
+            onClick={() => setSlideIndex(index)}
+          ></span>
+        ))}
+      </div>
 
       <article>
         <p>
@@ -87,7 +94,7 @@ function Home() {
         </p>
       </article>
     </>
-  )
+  );
 }
 
-export default Home
+export default Home;
