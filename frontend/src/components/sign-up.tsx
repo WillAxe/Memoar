@@ -1,28 +1,28 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { Link } from "react-router-dom"
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import type {
   FormData,
   SendPayload,
   ApiUserResponse,
-} from "./static/interfaces"
-import "../css/signup.css"
+} from "./static/interfaces";
+import "../css/signup.css";
 
 function SignUp() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     password: "",
     birthday: "",
     age: 0,
-  })
+  });
 
-  const [validateEmail, setValidateEmail] = useState<boolean>(true)
-  const [validatePassword, setValidatePassword] = useState<boolean>(true)
+  const [validateEmail, setValidateEmail] = useState<boolean>(true);
+  const [validatePassword, setValidatePassword] = useState<boolean>(true);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
       const payload: SendPayload = {
@@ -32,7 +32,7 @@ function SignUp() {
         user_password: formData.password,
         user_birthday: formData.birthday,
         user_age: formData.age,
-      }
+      };
 
       const response: Response = await fetch("/api/users", {
         method: "POST",
@@ -40,60 +40,66 @@ function SignUp() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
-      })
+      });
       if (response.ok) {
-        const data: ApiUserResponse = await response.json()
-        console.log(data)
-        const userId: number = data.user_id
-        localStorage.setItem("userID", userId.toString())
-        sessionStorage.setItem("isLoggedIn", true.toString())
-        setFormData({ name: "", email: "", password: "", birthday: "", age: 0 })
-        navigate(`/landingpage/${userId}`)
+        const data: ApiUserResponse = await response.json();
+        console.log(data);
+        const userId: number = data.user_id;
+        localStorage.setItem("userID", userId.toString());
+        sessionStorage.setItem("isLoggedIn", true.toString());
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          birthday: "",
+          age: 0,
+        });
+        navigate(`/landingpage/${userId}`);
       } else {
-        let msg: string = "Something went wrong when creating the account"
+        let msg: string = "Something went wrong when creating the account";
         try {
-          const body = await response.json()
-          if (body && body.error) msg = body.error
+          const body = await response.json();
+          if (body && body.error) msg = body.error;
         } catch {
-          const msg: string = "Error"
-          alert(msg)
+          const msg: string = "Error";
+          alert(msg);
         }
-        alert(msg)
+        alert(msg);
       }
     } catch (error) {
-      console.error("error:", error)
-      alert("Server error.")
+      console.error("error:", error);
+      alert("Server error.");
     }
-  }
+  };
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type } = e.target
+    const { name, value, type } = e.target;
 
     if (name === "email") {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(value)) {
-        setValidateEmail(false)
-        return
-      } else setValidateEmail(true)
+        setValidateEmail(false);
+        return;
+      } else setValidateEmail(true);
     }
 
     if (name === "password") {
-      const passwordRegex = /^[a-zA-Z-9]{4,}$/
+      const passwordRegex = /^[a-zA-Z-9]{4,}$/;
       if (!passwordRegex.test(value)) {
-        setValidatePassword(false)
-        return
+        setValidatePassword(false);
+        return;
       } else {
-        setValidatePassword(true)
+        setValidatePassword(true);
       }
     }
 
-    const parsedAge = type === "number" ? Number(value) : value
+    const parsedAge = type === "number" ? Number(value) : value;
 
     setFormData((prev) => ({
       ...prev,
       [name]: parsedAge,
-    }))
-  }
+    }));
+  };
 
   return (
     <>
@@ -150,12 +156,17 @@ function SignUp() {
 
           <label>
             your birthday(optional):
-            <input onChange={handleChange} type="date" name="birthday" />
+            <input
+              onChange={handleChange}
+              type="date"
+              name="birthday"
+              required
+            />
           </label>
 
           <label>
             age(optional):
-            <input onChange={handleChange} type="number" name="age" />
+            <input onChange={handleChange} type="number" name="age" required />
           </label>
           <div>
             <input
@@ -168,7 +179,7 @@ function SignUp() {
         </form>
       </div>
     </>
-  )
+  );
 }
 
-export default SignUp
+export default SignUp;
