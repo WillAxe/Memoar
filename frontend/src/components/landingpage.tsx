@@ -30,6 +30,7 @@ function LandingPage() {
     fetch(`/api/user/${userId}/feed`)
       .then((response) => response.json())
       .then((result: { feed: FeedItem[] | null }) => {
+        console.log(result.feed)
         setFeed(Array.isArray(result.feed) ? result.feed : [])
       })
 
@@ -40,7 +41,7 @@ function LandingPage() {
       .then((result: Notification[] | null) => {
         const notifications = Array.isArray(result) ? result : []
         const hasUnreadInvite: boolean = notifications.some(
-          (n: Notification) => !n.is_read && !n.handled
+          (n: Notification) => !n.is_read && !n.handled,
         )
         setNewInvites(hasUnreadInvite)
         setShowSuccess(true)

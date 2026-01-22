@@ -6,6 +6,7 @@ import { useState } from "react"
 function Home() {
   const [slideIndex, setSlideIndex] = useState<number>(0)
 
+  //This holds the images for the slideshow on the home page
   const slides = [
     {
       img: String(PhotoAlbum),
@@ -37,15 +38,12 @@ function Home() {
     <>
       <h1>Memoar</h1>
       <p>Your personal or shared memory gallery for every moment</p>
-      <a href="uml.html" target="_blank">
-        UML Diagram
-      </a>
 
       <div className="slideshow-container">
         {slides.map(
           (
             slide: { img: string; alt: string; text: string },
-            index: number
+            index: number,
           ) => (
             <div
               key={index}
@@ -57,7 +55,7 @@ function Home() {
                 {slide.text}
               </p>
             </div>
-          )
+          ),
         )}
         <button
           data-cy="change-slide-btn"
@@ -74,8 +72,17 @@ function Home() {
           &gt;
         </button>
       </div>
+      <div style={{ textAlign: "center" }}>
+        {slides.map((_, index) => (
+          <span
+            key={index}
+            className={`dot ${index === slideIndex ? "active" : ""}`}
+            onClick={() => setSlideIndex(index)}
+          ></span>
+        ))}
+      </div>
 
-      <article>
+      <article className="home-info-article">
         <p>
           Here you can create and share photo albums with friends, family or
           collegues. Or just a place to store pictures for safe keeping

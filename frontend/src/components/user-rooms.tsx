@@ -8,14 +8,27 @@ function UserRooms() {
   const [rooms, setRooms] = useState<ApiRoomResponse[]>([])
   console.log("The user's id", userId)
 
-  useEffect(() => {
+  const fetchRooms = () => {
     fetch(`/api/users/${userId}/rooms`)
       .then((response) => response.json())
       .then((result) => {
         console.log(result)
         setRooms(result.rooms)
       })
-  }, [userId])
+  }
+
+  useEffect(() => {
+    fetchRooms()
+    //Listens for the custom event dispacthed when a new room is created
+    const handleRoomCreated = () => {
+      fetchRooms()
+    }
+    window.addEventListener("roomCreated", handleRoomCreated)
+
+    return () => {
+      window.removeEventListener("roomCreated", handleRoomCreated)
+    }
+  }, [])
   return (
     <>
       <h1>Hello</h1>

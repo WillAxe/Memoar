@@ -28,3 +28,6 @@ uploads/
 .env
 
 data/
+
+#local sql file for initializing the database
+backend/database/init.sql

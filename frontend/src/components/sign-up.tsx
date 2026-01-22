@@ -150,13 +150,18 @@ function SignUp() {
           </label>
 
           <label>
-            your birthday(optional):
-            <input onChange={handleChange} type="date" name="birthday" />
+            your birthday
+            <input
+              onChange={handleChange}
+              type="date"
+              name="birthday"
+              required
+            />
           </label>
 
           <label>
-            age(optional):
-            <input onChange={handleChange} type="number" name="age" />
+            age
+            <input onChange={handleChange} type="number" name="age" required />
           </label>
           <div>
             <input
