@@ -3,9 +3,10 @@ import type { ApiRoomResponse } from "./static/interfaces"
 import LinkTo from "./linkTo.tsx"
 import "../css/user-rooms.css"
 
-const userId: string = localStorage.getItem("userID")!
 function UserRooms() {
+  const userId: string = localStorage.getItem("userID")!
   const [rooms, setRooms] = useState<ApiRoomResponse[]>([])
+  console.log("The user's id", userId)
 
   useEffect(() => {
     fetch(`/api/users/${userId}/rooms`)
@@ -14,7 +15,7 @@ function UserRooms() {
         console.log(result)
         setRooms(result.rooms)
       })
-  }, [])
+  }, [userId])
   return (
     <>
       <h1>Hello</h1>

@@ -1,10 +1,11 @@
+import { lazy } from "react"
 import Home from "./components/home"
 import Signup from "./components/sign-up"
 import Login from "./components/login"
-import LandingPage from "./components/landingpage"
-import UserRooms from "./components/user-rooms"
-import Room from "./components/room"
-import NewRoom from "./components/new-room"
+const LandingPage = lazy(() => import("./components/landingpage"))
+const UserRooms = lazy(() => import("./components/user-rooms"))
+const Room = lazy(() => import("./components/room"))
+const NewRoom = lazy(() => import("./components/new-room"))
 // import Notifications from "./components/notification"
 import Navbar from "./components/navbar"
 import { createHashRouter, Outlet, RouterProvider } from "react-router-dom"
