@@ -141,7 +141,7 @@ h1 + p {
 }
 
 /* Article Section */
-article {
+.home-info-article {
   max-width: 800px;
   margin: 4rem auto;
   padding: 2.5rem;
@@ -151,7 +151,7 @@ article {
   color: white;
 }
 
-article p {
+.home-info-article p {
   font-size: 1.2rem;
   line-height: 1.8;
   margin-bottom: 1.5rem;
@@ -159,7 +159,7 @@ article p {
   text-align: center;
 }
 
-article p:last-child {
+.home-info-article p:last-child {
   margin-bottom: 0;
 }
 
@@ -206,12 +206,12 @@ article p:last-child {
     right: 10px;
   }
 
-  article {
+  .home-info-article {
     margin: 3rem 1rem;
     padding: 2rem 1.5rem;
   }
 
-  article p {
+  .home-info-article p {
     font-size: 1.1rem;
   }
 }
@@ -238,11 +238,11 @@ article p:last-child {
     padding: 1rem 0.75rem 0.75rem;
   }
 
-  article {
+  .home-info-article {
     padding: 1.5rem 1rem;
   }
 
-  article p {
+  .home-info-article p {
     font-size: 1rem;
   }
 }

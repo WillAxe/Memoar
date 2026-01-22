@@ -1,10 +1,10 @@
-import PhotoAlbum from "../assets/Photo-album-ex.jpg";
-import CreateRoom from "../assets/create-room.jpg";
-import UploadPhoto from "../assets/upload-image.jpg";
-import "../css/home.css";
-import { useState } from "react";
+import PhotoAlbum from "../assets/Photo-album-ex.jpg"
+import CreateRoom from "../assets/create-room.jpg"
+import UploadPhoto from "../assets/upload-image.jpg"
+import "../css/home.css"
+import { useState } from "react"
 function Home() {
-  const [slideIndex, setSlideIndex] = useState<number>(0);
+  const [slideIndex, setSlideIndex] = useState<number>(0)
 
   //This holds the images for the slideshow on the home page
   const slides = [
@@ -23,15 +23,15 @@ function Home() {
       alt: String("an image of uploading a photo"),
       text: String("2. Upload a photo"),
     },
-  ];
+  ]
 
   function changeSlide(n: number) {
     setSlideIndex((prev) => {
-      const next = prev + n;
-      if (next < 0) return slides.length - 1;
-      if (next >= slides.length) return 0;
-      return next;
-    });
+      const next = prev + n
+      if (next < 0) return slides.length - 1
+      if (next >= slides.length) return 0
+      return next
+    })
   }
 
   return (
@@ -82,7 +82,7 @@ function Home() {
         ))}
       </div>
 
-      <article>
+      <article className="home-info-article">
         <p>
           Here you can create and share photo albums with friends, family or
           collegues. Or just a place to store pictures for safe keeping
@@ -94,7 +94,7 @@ function Home() {
         </p>
       </article>
     </>
-  );
+  )
 }
 
-export default Home;
+export default Home

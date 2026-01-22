@@ -7,13 +7,26 @@ const userId: string = localStorage.getItem("userID")!
 function UserRooms() {
   const [rooms, setRooms] = useState<ApiRoomResponse[]>([])
 
-  useEffect(() => {
+  const fetchRooms = () => {
     fetch(`/api/users/${userId}/rooms`)
       .then((response) => response.json())
       .then((result) => {
         console.log(result)
         setRooms(result.rooms)
       })
+  }
+
+  useEffect(() => {
+    fetchRooms()
+    //Listens for the custom event dispacthed when a new room is created
+    const handleRoomCreated = () => {
+      fetchRooms()
+    }
+    window.addEventListener("roomCreated", handleRoomCreated)
+
+    return () => {
+      window.removeEventListener("roomCreated", handleRoomCreated)
+    }
   }, [])
   return (
     <>

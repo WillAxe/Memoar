@@ -28,7 +28,7 @@ export function getUserFeed(user_id: number): Promise<FeedItem[]> {
     posts.caption AS content
     FROM rooms
     JOIN user_rooms ON user_rooms.room_id = rooms.room_id
-    JOIN posts ON rooms.room_posts = posts.post_id
+    JOIN posts ON rooms.room_id = posts.room_id
     WHERE user_rooms.user_id = $1
     )
     ORDER BY created_at DESC
@@ -40,7 +40,7 @@ export function getUserFeed(user_id: number): Promise<FeedItem[]> {
         if (err) {
           reject(err)
         } else resolve(res.rows)
-      }
+      },
     )
   })
 }

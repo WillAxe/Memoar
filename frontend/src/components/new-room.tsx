@@ -33,26 +33,42 @@ function NewRoom() {
 
     const result = await response.json()
     console.log(result)
+    if (response.ok) {
+      // Dispatch custom event to notify other components
+      window.dispatchEvent(new CustomEvent("roomCreated"))
+      setFormData({ room_name: "" })
+      setIsVisible(false)
+    }
   }
 
   return (
     <>
       <main>
-        <div onClick={() => setIsVisible(!isVisible)}>Create a new room</div>
+        <div
+          className="show-creation-form"
+          onClick={() => setIsVisible(!isVisible)}
+        >
+          Create a new room
+        </div>
         {isVisible && (
           <form
             data-cy="create-room-form"
             onSubmit={handleSubmit}
             className="create-new-form"
           >
-            <label htmlFor="room">Room Name:</label>
+            <label htmlFor="room_name">Room Name:</label>
             <input
               data-cy="room-name-input"
               type="text"
               name="room_name"
+              className="input-field"
               onChange={handleChange}
             />
-            <button data-cy="submit-data-btn" type="submit">
+            <button
+              data-cy="submit-data-btn"
+              className="submit-btn"
+              type="submit"
+            >
               Create room!
             </button>
           </form>
