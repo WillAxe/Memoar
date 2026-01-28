@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import type { ApiRoomResponse } from "./static/interfaces"
 import LinkTo from "./linkTo.tsx"
 import "../css/user-rooms.css"
@@ -8,14 +8,14 @@ function UserRooms() {
   const [rooms, setRooms] = useState<ApiRoomResponse[]>([])
   console.log("The user's id", userId)
 
-  const fetchRooms = () => {
+  const fetchRooms = useCallback(() => {
     fetch(`/api/users/${userId}/rooms`)
       .then((response) => response.json())
       .then((result) => {
         console.log(result)
         setRooms(result.rooms)
       })
-  }
+  }, [userId])
 
   useEffect(() => {
     fetchRooms()
@@ -28,7 +28,7 @@ function UserRooms() {
     return () => {
       window.removeEventListener("roomCreated", handleRoomCreated)
     }
-  }, [])
+  }, [fetchRooms])
   return (
     <>
       <h1>Hello</h1>

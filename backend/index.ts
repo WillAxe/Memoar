@@ -15,6 +15,11 @@ import postRoutes from "./routes/postRoutes.ts"
 import feedRoutes from "./routes/feedRoutes.ts"
 import notificationRoutes from "./routes/notificationRoutes.ts"
 
+//routes for other api's
+import planetRoutes from "./routes/planetRoutes.ts"
+import moonRoutes from "./routes/moonRoutes.ts"
+import celestialObjectsRoutes from "./routes/celestialObjectsRoutes.ts"
+
 app.use(cors({ origin: "http://localhost:5173", credentials: true }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -30,7 +35,7 @@ app.use(
       sameSite: "lax",
       secure: false,
     },
-  })
+  }),
 )
 
 app.use("/api", userRoutes)
@@ -38,6 +43,11 @@ app.use("/api", roomRoutes)
 app.use("/api", postRoutes)
 app.use("/api", feedRoutes)
 app.use("/api", notificationRoutes)
+
+//other api routes
+app.use("/api", planetRoutes)
+app.use("/api", moonRoutes)
+app.use("/api", celestialObjectsRoutes)
 
 app.use("/uploads", express.static("uploads"))
 
