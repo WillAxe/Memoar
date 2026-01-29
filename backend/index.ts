@@ -20,7 +20,12 @@ import planetRoutes from "./routes/planetRoutes.ts"
 import moonRoutes from "./routes/moonRoutes.ts"
 import celestialObjectsRoutes from "./routes/celestialObjectsRoutes.ts"
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }))
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://willaxe.github.io"],
+    credentials: true,
+  }),
+)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
