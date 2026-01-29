@@ -29,10 +29,10 @@ export function getPlanet(planetname: string): Promise<Planet> {
     database.query(
       query,
       [planetname],
-      (err: Error | null, res: QueryResult) => {
+      (err: Error | null, res: QueryResult<Planet>) => {
         if (err) reject(err)
         else {
-          resolve(res.rows[0])
+          resolve(res.rows[0] as Planet)
         }
       },
     )
