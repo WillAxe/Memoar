@@ -12,7 +12,7 @@ function Room() {
   const [activeImage, setActiveImage] = useState<string | null>(null)
   const [invitedUser, setInvitedUser] = useState<string>("")
   const [inviteText, setInviteText] = useState<string>(
-    "You have been invited to join this room"
+    `You have been invited to join room ${roomId}`,
   )
 
   const userId = localStorage.getItem("userID")!
@@ -152,7 +152,8 @@ function Room() {
                     <p className="caption">{post.caption}</p>
                     <span>
                       <small>
-                        Posted: {new Date(post.created_at).toLocaleString()}{" "}
+                        Posted:{" "}
+                        {new Date(post.created_at).toLocaleString()}{" "}
                       </small>
                     </span>
                   </div>
@@ -194,7 +195,7 @@ function Room() {
           </button>
           <h2>Invite user</h2>
           <form onSubmit={handleInviteSubmit} className="invite-form">
-            <label htmlFor="user">Enter the user id to invite</label>
+            <label htmlFor="user">Enter a user name to invite them</label>
             <input
               data-cy="invite-user-input"
               name="user"

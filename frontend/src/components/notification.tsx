@@ -17,7 +17,7 @@ function Notifications() {
       const data = await response.json()
       setNotifications(data)
     } catch (error) {
-      console.error("Error fetching notifications:", error)
+      console.error("Error showing the notifications:", error)
     }
   }, [])
 
@@ -32,7 +32,7 @@ function Notifications() {
         {
           method: "POST",
           credentials: "include",
-        }
+        },
       )
       if (response.ok) {
         alert("Invite accepted")
@@ -52,7 +52,7 @@ function Notifications() {
         {
           method: "POST",
           credentials: "include",
-        }
+        },
       )
       if (response.ok) {
         fetchNotifications()
