@@ -12,10 +12,10 @@ export const getMoons = async (
 ): Promise<void> => {
   try {
     const moonsFromService = await getMoonsService()
-    const moons: Moon[] = moonsFromService.map((o) => ({
-      moonid: o.moonid,
-      moonname: o.moonname,
-      moonplanetid: o.moonplanetid,
+    const moons: Moon[] = moonsFromService.map((m) => ({
+      moonid: m.moonid,
+      moonname: m.moonname,
+      moonplanetid: m.moonplanetid,
     }))
     res.status(200).json({ moons })
   } catch (error) {
