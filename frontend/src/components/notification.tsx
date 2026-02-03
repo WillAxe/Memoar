@@ -32,7 +32,7 @@ function Notifications() {
         {
           method: "POST",
           credentials: "include",
-        },
+        }
       )
       if (response.ok) {
         alert("Invite accepted")
@@ -52,7 +52,7 @@ function Notifications() {
         {
           method: "POST",
           credentials: "include",
-        },
+        }
       )
       if (response.ok) {
         fetchNotifications()

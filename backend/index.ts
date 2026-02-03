@@ -25,7 +25,7 @@ app.use(
   cors({
     origin: ["http://localhost:5173", "https://willaxe.github.io"],
     credentials: true,
-  }),
+  })
 )
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -41,7 +41,7 @@ app.use(
       sameSite: "lax",
       secure: false,
     },
-  }),
+  })
 )
 
 app.use("/api", userRoutes)

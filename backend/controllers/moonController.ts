@@ -8,7 +8,7 @@ import type { Response, Request } from "express"
 
 export const getMoons = async (
   _req: Request,
-  res: Response<{ moons: Moon[] } | { message: string; error?: unknown }>,
+  res: Response<{ moons: Moon[] } | { message: string; error?: unknown }>
 ): Promise<void> => {
   try {
     const moonsFromService = await getMoonsService()
@@ -25,7 +25,7 @@ export const getMoons = async (
 
 export const getMoon = async (
   req: Request,
-  res: Response<{ moon: Moon } | { message: string; error?: unknown }>,
+  res: Response<{ moon: Moon } | { message: string; error?: unknown }>
 ): Promise<void> => {
   try {
     const moonname = req.params.moonname

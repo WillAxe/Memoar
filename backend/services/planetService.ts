@@ -34,7 +34,7 @@ export function getPlanet(planetname: string): Promise<Planet> {
         else {
           resolve(res.rows[0] as Planet)
         }
-      },
+      }
     )
   })
 }

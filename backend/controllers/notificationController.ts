@@ -71,7 +71,7 @@ export async function roomInvite(req: Request, res: Response): Promise<void> {
     // Check if invited user exists
     const userCheck = await database.query(
       "SELECT user_id FROM users WHERE user_id = $1",
-      [invitedUserId],
+      [invitedUserId]
     )
     if (userCheck.rows.length === 0) {
       res.status(400).json({ message: "Invalid user ID" })
@@ -81,7 +81,7 @@ export async function roomInvite(req: Request, res: Response): Promise<void> {
     await createRoomInvite(
       Number(invitedUserId),
       Number(roomId),
-      invite_text || "You have been invited to room",
+      invite_text || "You have been invited to room"
     )
 
     res.status(201).json({ message: "Invitation sent" })

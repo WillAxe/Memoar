@@ -10,7 +10,7 @@ export const getCelestialObjects = async (
   _req: Request,
   res: Response<
     { objects: CelestialObject[] } | { message: string; error?: unknown }
-  >,
+  >
 ): Promise<void> => {
   try {
     const ObjectsFromService = await getCelestialObjectsService()
@@ -29,12 +29,12 @@ export const getCelestialObject = async (
   req: Request,
   res: Response<
     { object: CelestialObject } | { message: string; error?: unknown }
-  >,
+  >
 ): Promise<void> => {
   try {
     const objectname = req.params.objectname
     const objectFromService = await getCelestialObjectService(
-      String(objectname),
+      String(objectname)
     )
     const object: CelestialObject = {
       objectid: objectFromService.objectid,

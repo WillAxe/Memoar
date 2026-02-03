@@ -23,7 +23,9 @@ nav a {
   font-weight: 500;
   padding: 8px 12px;
   border-radius: 8px;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 nav a:hover {

@@ -43,7 +43,7 @@ function Home() {
         {slides.map(
           (
             slide: { img: string; alt: string; text: string },
-            index: number,
+            index: number
           ) => (
             <div
               key={index}
@@ -55,7 +55,7 @@ function Home() {
                 {slide.text}
               </p>
             </div>
-          ),
+          )
         )}
         <button
           data-cy="change-slide-btn"

@@ -7,7 +7,7 @@ import type { Response, Request } from "express"
 
 export const getPlanets = async (
   _req: Request,
-  res: Response<{ planets: Planet[] } | { message: string; error?: unknown }>,
+  res: Response<{ planets: Planet[] } | { message: string; error?: unknown }>
 ): Promise<void> => {
   try {
     const planetsFromService = await getPlanetsService()
@@ -28,7 +28,7 @@ export const getPlanets = async (
 
 export const getPlanet = async (
   req: Request,
-  res: Response<{ planet: Planet } | { message: string; error?: unknown }>,
+  res: Response<{ planet: Planet } | { message: string; error?: unknown }>
 ): Promise<void> => {
   try {
     const planetname = req.params.planetname

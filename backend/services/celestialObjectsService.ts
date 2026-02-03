@@ -17,13 +17,13 @@ export function getCelestialObjects(): Promise<CelestialObject[]> {
         else {
           resolve(res.rows)
         }
-      },
+      }
     )
   })
 }
 
 export function getCelestialObject(
-  objectname: string,
+  objectname: string
 ): Promise<CelestialObject> {
   return new Promise<CelestialObject>((resolve, reject) => {
     const query = "SELECT * FROM CometsAndAsteroids WHERE ObjectName = $1;"
@@ -35,7 +35,7 @@ export function getCelestialObject(
         else {
           resolve(res.rows[0])
         }
-      },
+      }
     )
   })
 }
