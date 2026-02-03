@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react"
-import type { Notification } from "./static/interfaces"
+import type { Notification } from "../static/interfaces"
 
 function Notifications() {
   const [notifications, setNotifications] = useState<Notification[]>([])

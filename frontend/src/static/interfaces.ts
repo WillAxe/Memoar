@@ -15,8 +15,10 @@ export interface FormData {
   age: number | null
 }
 
-export interface SendPayload
-  extends Omit<FormData, "name" | "email" | "password" | "birthday" | "age"> {
+export interface SendPayload extends Omit<
+  FormData,
+  "name" | "email" | "password" | "birthday" | "age"
+> {
   user_name: string
   user_mail: string
   user_password: string
@@ -64,4 +66,10 @@ export type ApiPostResponse = {
   image_url: string
   caption: string | null
   created_at: string
+}
+
+export type SearchResult = {
+  user_id: number
+  user_name: string
+  user_mail: string
 }

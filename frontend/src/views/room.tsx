@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react"
-import type { ApiRoomResponse, ApiPostResponse } from "./static/interfaces"
+import type { ApiRoomResponse, ApiPostResponse } from "../static/interfaces"
+import SearchBar from "../components/search-bar"
 import "../css/room.css"
 
 function Room() {
@@ -10,7 +11,7 @@ function Room() {
   const [caption, setCaption] = useState<string>("")
   const [activePost, setActivePost] = useState<ApiPostResponse | null>(null)
   const [activeImage, setActiveImage] = useState<string | null>(null)
-  const [invitedUser, setInvitedUser] = useState<string>("")
+  const [selectedUserIds, setSelectedUserIds] = useState<number[]>([])
   const [inviteText, setInviteText] = useState<string>(
     `You have been invited to join room ${roomId}`,
   )
@@ -72,37 +73,42 @@ function Room() {
 
   function handleInviteSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const userId = parseInt(invitedUser)
-    if (isNaN(userId) || !roomId) {
-      alert("Please enter a valid user ID")
+
+    if (selectedUserIds.length === 0) {
+      alert("Please select at least one user to invite")
       return
     }
-    fetch("/api/notifications/invite", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        invitedUserId: userId,
-        roomId: parseInt(roomId),
-        invite_text: inviteText,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          //Close the dialog modal after inviting
+
+    // Send invites to all selected users
+    Promise.all(
+      selectedUserIds.map((userId) =>
+        fetch("/api/notifications/invite", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            invitedUserId: userId,
+            roomId: parseInt(roomId),
+            invite_text: inviteText,
+          }),
+        }),
+      ),
+    )
+      .then((responses) => {
+        const allSuccessful = responses.every((res) => res.ok)
+        if (allSuccessful) {
           inviteDialogRef.current?.close()
-          setInvitedUser("")
-          alert("Invitation sent successfully")
-          setInvitedUser("")
+          setSelectedUserIds([])
+          alert(`Successfully invited ${selectedUserIds.length} user(s)`)
         } else {
-          alert("Failed to send invitation")
+          alert("Some invitations failed to send")
         }
       })
       .catch((error) => {
-        console.error("Error sending invite:", error)
-        alert("Error sending invitation")
+        console.error("Error sending invites:", error)
+        alert("Error sending invitations")
       })
   }
 
@@ -114,6 +120,7 @@ function Room() {
     inviteDialogRef.current?.close()
   }
 
+  // Functions that handle the expansion and closing of the post and image modals
   function openPost(post: ApiPostResponse) {
     setActivePost(post)
     postDialogRef.current?.showModal()
@@ -193,24 +200,23 @@ function Room() {
           >
             X
           </button>
-          <h2>Invite user</h2>
+          <h2>Invite users to room</h2>
           <form onSubmit={handleInviteSubmit} className="invite-form">
-            <label htmlFor="user">Enter a user name to invite them</label>
-            <input
-              data-cy="invite-user-input"
-              name="user"
-              type="text"
-              value={invitedUser}
-              onChange={(e) => setInvitedUser(e.target.value)}
-            />
+            <label>Search and select users to invite</label>
+            <SearchBar onUsersSelected={setSelectedUserIds} />
+
             <label htmlFor="inviteText">Invite message</label>
             <textarea
               name="inviteText"
               value={inviteText}
               onChange={(e) => setInviteText(e.target.value)}
             />
-            <button className="send-btn" type="submit">
-              Send invite
+            <button
+              className="send-btn"
+              type="submit"
+              disabled={selectedUserIds.length === 0}
+            >
+              Send invite{selectedUserIds.length > 1 ? "s" : ""}
             </button>
           </form>
         </dialog>

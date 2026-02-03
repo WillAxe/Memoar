@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import type { ApiUserResponse } from "./static/interfaces"
+import type { ApiUserResponse } from "../static/interfaces"
 import { Link } from "react-router-dom"
 import "../css/login.css"
 
@@ -89,8 +89,8 @@ function Login() {
                 loginFailed
                   ? "wrong-input"
                   : validateEmail
-                  ? "correct-input"
-                  : "wrong-input"
+                    ? "correct-input"
+                    : "wrong-input"
               }
               type="email"
               name="email"
@@ -106,8 +106,8 @@ function Login() {
                 loginFailed
                   ? "wrong-input"
                   : validatePassword
-                  ? "correct-input"
-                  : "wrong-input"
+                    ? "correct-input"
+                    : "wrong-input"
               }
               type="password"
               name="password"

@@ -1,6 +1,6 @@
 import "../css/new-room.css"
 import { useState } from "react"
-import type { RoomFormData } from "./static/interfaces"
+import type { RoomFormData } from "../static/interfaces"
 
 function NewRoom() {
   const [isVisible, setIsVisible] = useState<boolean>(false)

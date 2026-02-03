@@ -5,10 +5,10 @@ import type {
   ApiUserResponse,
   FeedItem,
   Notification,
-} from "./static/interfaces"
+} from "../static/interfaces"
 import "../css/landingpage.css"
-import "./notification"
-import Notifications from "./notification"
+import "../components/notification"
+import Notifications from "../components/notification"
 
 function LandingPage() {
   const { userId } = useParams()

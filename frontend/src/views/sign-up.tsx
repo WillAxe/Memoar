@@ -5,7 +5,7 @@ import type {
   FormData,
   SendPayload,
   ApiUserResponse,
-} from "./static/interfaces"
+} from "../static/interfaces"
 import "../css/signup.css"
 
 function SignUp() {

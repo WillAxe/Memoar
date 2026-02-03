@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react"
-import type { ApiRoomResponse } from "./static/interfaces"
-import LinkTo from "./linkTo.tsx"
+import type { ApiRoomResponse } from "../static/interfaces"
+import LinkTo from "../components/linkTo"
 import "../css/user-rooms.css"
 
 function UserRooms() {

@@ -14,6 +14,7 @@ import roomRoutes from "./routes/roomRoutes.ts"
 import postRoutes from "./routes/postRoutes.ts"
 import feedRoutes from "./routes/feedRoutes.ts"
 import notificationRoutes from "./routes/notificationRoutes.ts"
+import { searchRouter } from "./routes/searchRoutes.ts"
 
 //routes for other api's
 import planetRoutes from "./routes/planetRoutes.ts"
@@ -47,6 +48,7 @@ app.use("/api", userRoutes)
 app.use("/api", roomRoutes)
 app.use("/api", postRoutes)
 app.use("/api", feedRoutes)
+app.use("/api/search", searchRouter)
 app.use("/api", notificationRoutes)
 
 //other api routes

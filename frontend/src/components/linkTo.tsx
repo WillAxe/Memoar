@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import type { ApiRoomResponse } from "./static/interfaces"
+import type { ApiRoomResponse } from "../static/interfaces"
 
 export type LinkToProps = {
   body: ApiRoomResponse
