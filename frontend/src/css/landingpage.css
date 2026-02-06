@@ -100,13 +100,23 @@ h1 {
 
 .feed-card {
   border: 1px solid #d1d5db;
-  padding: 0.5rem;
+  border-bottom: 0;
+  border-top: 0;
+  padding: 0.75rem;
   margin-bottom: 0.5rem;
+}
+
+.feed-card:first-child {
+  border-top: 1px solid #d1d5db;
+}
+
+.feed-card:last-child {
+  border-bottom: 1px solid #d1d5db;
 }
 
 .feed-card:hover {
   /* transform: translateY(-3px); */
-  box-shadow: 0 7px 19px rgba(188, 188, 188, 0.098);
+  box-shadow: 0 7px 19px rgba(188, 188, 188, 0.205);
 }
 
 .feed-card h3 {
