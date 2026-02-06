@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useCallback, useEffect, useRef } from "react"
 import type { ApiRoomResponse, ApiPostResponse } from "../static/interfaces"
 import SearchBar from "../components/search-bar"
 import "../css/room.css"
 
 function Room() {
-  const roomId = localStorage.getItem("roomID")!
+  const [roomId, setRoomId] = useState<string>(localStorage.getItem("roomID")!)
   const [room, setRoom] = useState<ApiRoomResponse>()
   const [posts, setPosts] = useState<ApiPostResponse[]>([])
   const [file, setFile] = useState<File | null>(null)
@@ -12,11 +12,43 @@ function Room() {
   const [activePost, setActivePost] = useState<ApiPostResponse | null>(null)
   const [activeImage, setActiveImage] = useState<string | null>(null)
   const [selectedUserIds, setSelectedUserIds] = useState<number[]>([])
-  const [inviteText, setInviteText] = useState<string>(
-    `You have been invited to join room ${roomId}`,
-  )
+  const [inviteText, setInviteText] = useState<string>("")
 
   const userId = localStorage.getItem("userID")!
+
+  // Check localStorage on every render and update roomId if needed
+  useEffect(() => {
+    const checkRoomId = () => {
+      const stored = localStorage.getItem("roomID")
+      if (stored && stored !== roomId) {
+        setRoomId(stored)
+        setPosts([])
+        setRoom(undefined)
+      }
+    }
+
+    checkRoomId()
+    const handleFocus = () => checkRoomId()
+    const handleRoomChange = () => checkRoomId()
+
+    window.addEventListener("focus", handleFocus)
+    window.addEventListener("roomChanged", handleRoomChange)
+
+    // Poll every 700ms to catch changes quickly
+    const interval = setInterval(checkRoomId, 700)
+
+    return () => {
+      window.removeEventListener("focus", handleFocus)
+      window.removeEventListener("roomChanged", handleRoomChange)
+      clearInterval(interval)
+    }
+  }, [roomId])
+
+  // Update invite text when room changes
+  useEffect(() => {
+    setInviteText(`You have been invited to join room ${roomId}`)
+  }, [roomId])
+
   const inviteDialogRef = useRef<HTMLDialogElement | null>(null)
   const postDialogRef = useRef<HTMLDialogElement | null>(null)
   const imageDialogRef = useRef<HTMLDialogElement | null>(null)
@@ -41,6 +73,14 @@ function Room() {
       if (response.ok) {
         const data = await response.json()
         console.log("Upload success", data)
+        fetchPosts()
+        setFile(null)
+        setCaption("")
+        // Reset the file input
+        const fileInput = document.querySelector(
+          'input[type="file"]',
+        ) as HTMLInputElement
+        if (fileInput) fileInput.value = ""
       } else {
         console.error("Upload failed", response.status, await response.text())
       }
@@ -60,7 +100,7 @@ function Room() {
   }, [roomId])
 
   //Fetch call for fetching posts and handling the response
-  useEffect(() => {
+  const fetchPosts = useCallback(() => {
     fetch(`/api/rooms/${roomId}/posts`, {
       credentials: "include",
     })
@@ -70,6 +110,10 @@ function Room() {
         setPosts(result.roomPosts)
       })
   }, [roomId])
+
+  useEffect(() => {
+    fetchPosts()
+  }, [fetchPosts])
 
   function handleInviteSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -180,7 +224,11 @@ function Room() {
                 setFile(e.target.files ? e.target.files[0] : null)
               }
             />
-            <textarea onChange={(e) => setCaption(e.target.value)} />
+            <textarea
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+              placeholder="Add a caption..."
+            />
             <button type="button" onClick={upload}>
               Upload post
             </button>
