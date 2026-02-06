@@ -4,7 +4,7 @@ import type { UserSearchResult } from "../services/searchServices.ts"
 
 export const searchUsers = async (
   req: Request,
-  res: Response<{ users: UserSearchResult[] } | { message: string }>,
+  res: Response<{ users: UserSearchResult[] } | { message: string }>
 ): Promise<void> => {
   try {
     const { query } = req.query

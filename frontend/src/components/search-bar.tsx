@@ -25,7 +25,7 @@ function SearchBar({ onUsersSelected }: SearchBarProps) {
           `/api/search/users?query=${encodeURIComponent(searchQuery)}`,
           {
             credentials: "include",
-          },
+          }
         )
         const data = await response.json()
         setSearchResults(data.users || [])
@@ -46,10 +46,14 @@ function SearchBar({ onUsersSelected }: SearchBarProps) {
         ? prev.filter((id) => id !== userId)
         : [...prev, userId]
 
-      onUsersSelected(newSelection)
       return newSelection
     })
   }
+
+  // Notify parent component when selection changes
+  useEffect(() => {
+    onUsersSelected(selectedUsers)
+  }, [selectedUsers, onUsersSelected])
 
   const isSelected = (userId: number) => selectedUsers.includes(userId)
 
@@ -81,7 +85,10 @@ function SearchBar({ onUsersSelected }: SearchBarProps) {
               <input
                 type="checkbox"
                 checked={isSelected(user.user_id)}
-                onChange={() => toggleUserSelection(user.user_id)}
+                onChange={() => {
+                  toggleUserSelection(user.user_id)
+                  console.log(user)
+                }}
                 className="user-checkbox"
               />
             </div>

@@ -20,7 +20,7 @@ export const getUsers = async (
   _req: Request,
   res: Response<
     { users: UserResponse[] } | { message: string; error?: unknown }
-  >,
+  >
 ): Promise<void> => {
   try {
     const usersFromDb = await getUsersService()
@@ -40,7 +40,7 @@ export const getUsers = async (
 
 export const getUserById = async (
   req: Request,
-  res: Response<{ user: UserResponse } | { message: string; error?: unknown }>,
+  res: Response<{ user: UserResponse } | { message: string; error?: unknown }>
 ): Promise<void> => {
   try {
     const id = req.params.id
@@ -63,7 +63,7 @@ export const createUser = async (
   req: Request<{
     user: UserResponse
   }>,
-  res: Response,
+  res: Response
 ): Promise<void> => {
   try {
     const { user_name, user_mail, user_password, user_birthday, user_age } =
@@ -74,7 +74,7 @@ export const createUser = async (
       user_mail,
       user_password,
       user_birthday,
-      user_age,
+      user_age
     )
 
     req.session.userId = user.user_id
@@ -86,7 +86,7 @@ export const createUser = async (
 
 export const loginUser = async (
   req: Request<{ user: UserResponse }>,
-  res: Response,
+  res: Response
 ): Promise<void> => {
   try {
     const { user_mail, user_password } = req.body

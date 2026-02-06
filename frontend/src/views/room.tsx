@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import type { ApiRoomResponse, ApiPostResponse } from "../static/interfaces"
 import SearchBar from "../components/search-bar"
 import "../css/room.css"
@@ -78,7 +78,7 @@ function Room() {
         setCaption("")
         // Reset the file input
         const fileInput = document.querySelector(
-          'input[type="file"]',
+          'input[type="file"]'
         ) as HTMLInputElement
         if (fileInput) fileInput.value = ""
       } else {
@@ -107,6 +107,14 @@ function Room() {
       .then((response) => response.json())
       .then((result) => {
         console.log("Posts in room:", result)
+        if (
+          result.roomPosts === undefined ||
+          result.roomPosts === null ||
+          result.roomPosts.length === 0
+        ) {
+          setPosts([])
+          return
+        }
         setPosts(result.roomPosts)
       })
   }, [roomId])
@@ -114,6 +122,9 @@ function Room() {
   useEffect(() => {
     fetchPosts()
   }, [fetchPosts])
+  const handleUsersSelected = useCallback((userIds: number[]) => {
+    setSelectedUserIds(userIds)
+  }, [])
 
   function handleInviteSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -123,31 +134,44 @@ function Room() {
       return
     }
 
+    console.log("Selected user IDs:", selectedUserIds)
+    console.log("Room ID:", roomId)
+
     // Send invites to all selected users
     Promise.all(
-      selectedUserIds.map((userId) =>
-        fetch("/api/notifications/invite", {
+      selectedUserIds.map((userId) => {
+        const payload = {
+          invitedUserId: Number(userId),
+          roomId: Number(roomId),
+          invite_text: inviteText,
+        }
+        console.log("Sending invite payload:", payload)
+        return fetch("/api/notifications/invite", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify({
-            invitedUserId: userId,
-            roomId: parseInt(roomId),
-            invite_text: inviteText,
-          }),
-        }),
-      ),
+          body: JSON.stringify(payload),
+        })
+      })
     )
-      .then((responses) => {
+      .then(async (responses) => {
+        // Check each response for errors
+        for (const res of responses) {
+          if (!res.ok) {
+            const errorData = await res.json()
+            console.error("Invite failed:", errorData)
+          }
+        }
+
         const allSuccessful = responses.every((res) => res.ok)
         if (allSuccessful) {
           inviteDialogRef.current?.close()
           setSelectedUserIds([])
           alert(`Successfully invited ${selectedUserIds.length} user(s)`)
         } else {
-          alert("Some invitations failed to send")
+          alert("Some invitations failed to send. Check console for details.")
         }
       })
       .catch((error) => {
@@ -251,7 +275,7 @@ function Room() {
           <h2>Invite users to room</h2>
           <form onSubmit={handleInviteSubmit} className="invite-form">
             <label>Search and select users to invite</label>
-            <SearchBar onUsersSelected={setSelectedUserIds} />
+            <SearchBar onUsersSelected={handleUsersSelected} />
 
             <label htmlFor="inviteText">Invite message</label>
             <textarea
