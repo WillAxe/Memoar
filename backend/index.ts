@@ -3,7 +3,11 @@ dotenv.config()
 import express from "express"
 import cors from "cors"
 import session from "express-session"
+import connectPgSimple from "connect-pg-simple"
+import { database } from "./database.ts"
+
 const app = express()
+const PgSession = connectPgSimple(session)
 
 const port: number | string = process.env.PORT || 3000
 
@@ -32,14 +36,20 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(
   session({
+    store: new PgSession({
+      pgPromise: database,
+      createTableIfMissing: true,
+      tableName: "session",
+    }),
     name: "sid",
-    secret: "super-secret",
+    secret: process.env.SESSION_SECRET || "super-secret",
     resave: false,
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
       sameSite: "lax",
       secure: false,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
     },
   })
 )
