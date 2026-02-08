@@ -37,7 +37,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(
   session({
     store: new PgSession({
-      pgPromise: database,
+      pool: database,
       createTableIfMissing: true,
       tableName: "session",
     }),
