@@ -1,6 +1,6 @@
 import { database } from "../database.ts"
 import type { QueryResult } from "pg"
-
+import bcrypt from "bcryptjs"
 interface User {
   user_id: number
   user_name: string
@@ -37,48 +37,47 @@ export function getUserById(id: number) {
   })
 }
 
-export function loginUser(user_mail: string, user_password: string) {
-  return new Promise<User>((resolve, reject) => {
-    const query =
-      "SELECT * FROM Users WHERE user_mail = $1 AND user_password = $2;"
-    database.query(
-      query,
-      [user_mail, user_password],
-      (err: Error, res: QueryResult) => {
-        if (err) {
-          reject(err)
-        } else {
-          console.log(res.rows)
-          resolve(<User>res.rows[0])
-        }
-      }
-    )
-  })
+export async function loginUser(user_mail: string, user_password: string) {
+  const query = "SELECT * FROM Users WHERE user_mail = $1;"
+  const res = await database.query(query, [user_mail])
+  const user = res.rows[0] as User | undefined
+
+  if (!user) {
+    throw new Error("Invalid email or password")
+  }
+
+  const isMatch: boolean = await bcrypt.compare(
+    user_password,
+    user.user_password
+  )
+
+  if (!isMatch) {
+    throw new Error("Invalid email or password")
+  }
+
+  return user
 }
 
-export function createUser(
+export async function createUser(
   user_name: string,
   user_mail: string,
   user_password: string,
   user_birthday: string | null,
   user_age: number | null
 ) {
-  return new Promise<User>((resolve, reject) => {
-    const query =
-      "INSERT INTO Users(user_name, user_mail, user_password, user_birthday, user_age) VALUES($1, $2, $3, $4, $5) RETURNING *"
-    database.query(
-      query,
-      [user_name, user_mail, user_password, user_birthday, user_age],
-      (err: Error, res: QueryResult) => {
-        if (err) {
-          reject(err)
-        } else {
-          console.log("User created")
-          resolve(res.rows[0] as User)
-        }
-      }
-    )
-  })
+  const salt: string = await bcrypt.genSalt(10)
+  const hashedPassword: string = await bcrypt.hash(user_password, salt)
+  const query =
+    "INSERT INTO Users(user_name, user_mail, user_password, user_birthday, user_age) VALUES($1, $2, $3, $4, $5) RETURNING *"
+  const res = await database.query(query, [
+    user_name,
+    user_mail,
+    hashedPassword,
+    user_birthday,
+    user_age,
+  ])
+  console.log("User created")
+  return res.rows[0] as User
 }
 
 // export default {

@@ -44,7 +44,6 @@ function SignUp() {
       })
       if (response.ok) {
         const data: ApiUserResponse = await response.json()
-        console.log(data)
         const userId: number = data.user_id
         localStorage.removeItem("userID")
         localStorage.setItem("userID", userId.toString())
