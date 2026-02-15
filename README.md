@@ -17,13 +17,10 @@ More features are coming soon!
 
 ## ⚠️ Important Security Notice
 
-**Memoar is NOT yet encrypted.**
+This is a development-stage project, security improvements are still being worked on.
 
-Please **DO NOT**:
-- Use a password you actively use on other applications
-- Use a real or important email address
+**Passwords are however encrypted**
 
-This is a development-stage project, and security improvements are still being worked on.
 
 ---
 
@@ -43,7 +40,7 @@ This is a development-stage project, and security improvements are still being w
 
 ## 📌 Disclaimer
 
-This project is currently intended for testing, experimentation, and learning purposes. Use at your own risk until encryption and full security measures are implemented.
+This project is currently intended for testing, experimentation, and learning purposes. Use at your own risk until full security measures are implemented.
 
 ---
 
